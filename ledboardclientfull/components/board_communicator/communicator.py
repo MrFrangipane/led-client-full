@@ -22,20 +22,20 @@ class BoardCommunicator:
     def set_serial_port_name(self, name):
         self.serial_communicator.set_port_name(name)
 
-    def configure(self, settings: BoardConfiguration):
-        self.serial_communicator.send(BoardConfigurationStruct.from_board_configuration(settings))
-        _logger.info(f"Configured board on {self.serial_communicator.serial_port_name}")
+    def configure(self, configuration: BoardConfiguration):
+        self.serial_communicator.send(BoardConfigurationStruct.from_entity(configuration))
+        _logger.info(f"Configured board on {self.serial_communicator.serial_port_name} {configuration}")
 
     def get_configuration(self) -> BoardConfiguration:
         _logger.info(f"Get board configuration from {self.serial_communicator.serial_port_name}")
-        configuration: BoardConfigurationStruct = self.serial_communicator.receive(BoardConfigurationStruct)
-        if configuration is not None:
-            return configuration.to_board_configuration()
+        configuration_struct: BoardConfigurationStruct = self.serial_communicator.receive(BoardConfigurationStruct)
+        if configuration_struct is not None:
+            return configuration_struct.to_entity()
 
     def illuminate(self, illumination: Illumination):
         if self.serial_communicator.serial_port_name is None:
             return
 
-        serial_illumination = IlluminationStruct(**vars(illumination))
-        self.serial_communicator.send(serial_illumination)
+        illumination_struct = IlluminationStruct.from_entity(illumination)
+        self.serial_communicator.send(illumination_struct)
         _logger.debug(f"Illuminated {self.serial_communicator.serial_port_name} {illumination}")

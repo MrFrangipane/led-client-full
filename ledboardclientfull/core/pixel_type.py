@@ -1,6 +1,6 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class PixelType(IntEnum):
+class PixelType(Enum):
     GRBW = 0
     GRB = 1

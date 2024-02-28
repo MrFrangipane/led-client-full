@@ -1,3 +1,4 @@
 from ledboardclientfull.api import LEDBoardClientAPI
-from ledboardclientfull.core.illumination import Illumination
 from ledboardclientfull.core.board_configuration import BoardConfiguration
+from ledboardclientfull.core.illumination import Illumination
+from ledboardclientfull.core.pixel_type import PixelType
