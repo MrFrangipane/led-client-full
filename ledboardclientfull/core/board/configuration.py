@@ -6,6 +6,7 @@ from ledboardclientfull.core.pixel_type import PixelType
 @dataclass
 class BoardConfiguration:
     name: str = ""
+    serial_port_name: str = ""
     hardware_revision: int = 1
     firmware_revision: int = 1
     hardware_id: str = ""

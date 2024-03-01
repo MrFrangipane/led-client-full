@@ -11,8 +11,14 @@ def new() -> None:
 
 
 def save(filepath) -> None:
+    if Components().project_persistence is None:
+        raise RuntimeError("LEDBoard client is not initialized")
+
     Components().project_persistence.save(filepath)
 
 
 def load(filepath) -> None:
+    if Components().project_persistence is None:
+        raise RuntimeError("LEDBoard client is not initialized")
+
     Components().project_persistence.load(filepath)

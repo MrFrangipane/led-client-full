@@ -34,7 +34,9 @@ class BoardCommunicator:
         _logger.info(f"Get board configuration from {self.serial_communicator.serial_port_name}")
         configuration_struct: BoardConfigurationStruct = self.serial_communicator.receive(BoardConfigurationStruct)
         if configuration_struct is not None:
-            return configuration_struct.to_entity()
+            configuration = configuration_struct.to_entity()
+            configuration.serial_port_name = self.serial_communicator.serial_port_name
+            return configuration
 
     def illuminate(self, illumination: BoardIllumination):
         if self.serial_communicator.serial_port_name is None:

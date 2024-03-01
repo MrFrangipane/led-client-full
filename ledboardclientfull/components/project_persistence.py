@@ -1,13 +1,16 @@
 import json
-import os.path
 from enum import Enum
 from ipaddress import IPv4Address
 
 from ledboardclientfull.core.project import Project
-# from ledboardclientfull.core.components import Components
+from ledboardclientfull.core.components import Components
 
 
 class ProjectPersistence:
+
+    @property
+    def current_project(self) -> Project:
+        return self._project_from_components()
 
     def new(self):
         self._update_components(Project())
@@ -33,14 +36,12 @@ class ProjectPersistence:
 
     @staticmethod
     def _update_components(project: Project):
-        return
-        # Components().board_communicator.set_serial_port_name(project.board_port_name)
+        Components().board_communicator.set_serial_port_name(project.board_configuration.serial_port_name)
 
     @staticmethod
     def _project_from_components() -> Project:
         project = Project()
+
+        project.board_configuration = Components().board_communicator.get_configuration()
+
         return project
-
-        # project.board_port_name = Components().board_communicator.serial_port_name
-
-        # return project
