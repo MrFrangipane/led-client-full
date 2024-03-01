@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pythonarduinoserial.types import *
 
-from ledboardclientfull.core.illumination import Illumination
+from ledboardclientfull.core.board.illumination import BoardIllumination
 
 
 @dataclass
@@ -15,5 +15,5 @@ class IlluminationStruct:
     w: IntegerType() = 0
 
     @staticmethod
-    def from_entity(source: Illumination):
+    def from_entity(source: BoardIllumination):
         return IlluminationStruct(**vars(source))
