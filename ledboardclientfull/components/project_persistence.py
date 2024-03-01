@@ -43,5 +43,6 @@ class ProjectPersistence:
         project = Project()
 
         project.board_configuration = Components().board_communicator.get_configuration()
+        project.board_illumination = Components().board_illumination
 
         return project

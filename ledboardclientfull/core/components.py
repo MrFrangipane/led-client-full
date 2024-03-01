@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from ledboardclientfull.components.board_communicator.communicator import BoardCommunicator
-from ledboardclientfull.components.board_lister import BoardLister
+from ledboardclientfull import BoardIllumination
+# from ledboardclientfull.components.board_communicator.communicator import BoardCommunicator
+# from ledboardclientfull.components.board_lister import BoardLister
 from ledboardclientfull.components.image_processor.image_processor import ScanImageProcessor
 # from ledboardclientfull.components.project_persistence import ProjectPersistence
 from ledboardclientfull.core.configuration import Configuration
@@ -11,7 +12,14 @@ from ledboardclientfull.python_extensions.singleton_metaclass import SingletonMe
 @dataclass
 class Components(metaclass=SingletonMetaclass):
     configuration = Configuration()
-    board_communicator = BoardCommunicator()
-    board_lister = BoardLister()
+    board_communicator = None  # FIXME : use an AbstractBoardCommunicator
+    board_illumination = BoardIllumination()
+    board_lister = None  # FIXME : use an AbstractBoardLister
     image_processor = ScanImageProcessor()
     project_persistence = None  # FIXME : use an AbstractProjectPersistence
+
+    def __getattribute__(self, item):
+        attribute = super().__getattribute__(item)
+        if attribute is None:
+            raise RuntimeError(f"Component '{item}' is not initialized")
+        return attribute
