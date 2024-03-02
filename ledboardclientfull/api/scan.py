@@ -1,6 +1,9 @@
+from typing import Tuple
+
 from PySide6.QtGui import QPixmap
 
 from ledboardclientfull.core.components import Components
+from ledboardclientfull.core.entities.scan.scan_result import ScanResult
 from ledboardclientfull.core.entities.scan.settings import ScanSettings
 from ledboardclientfull.core.entities.scan.mask import ScanMask
 
@@ -49,3 +52,27 @@ def get_mask():
 
 def reset_mask() -> None:
     Components().image_processor.reset_mask()
+
+
+def start_scan() -> None:
+    Components().scanner.start_scan()
+
+
+def step_scan() -> None:
+    Components().scanner.step_scan()
+
+
+def stop_scan() -> None:
+    Components().scanner.stop_scan()
+
+
+def is_scanning() -> bool:
+    return Components().scanner.is_scanning()
+
+
+def get_detection_coordinates() -> Tuple[int, int]:
+    return Components().image_processor.detection_coordinates
+
+
+def get_scan_result() -> ScanResult:
+    return Components().scanner.scan_result

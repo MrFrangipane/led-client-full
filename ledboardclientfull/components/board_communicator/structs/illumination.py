@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from pythonarduinoserial.types import *
 
 from ledboardclientfull.core.entities.board.illumination import BoardIllumination
+from ledboardclientfull.core.entities.board.illumination_type import BoardIlluminationType
 
 
 @dataclass
@@ -23,4 +24,6 @@ class IlluminationStruct:
         return IlluminationStruct(**as_dict)
 
     def to_entity(self):
-        return BoardIllumination(**vars(self))
+        illumination = BoardIllumination(**vars(self))
+        illumination.type = BoardIlluminationType(self.type)
+        return illumination

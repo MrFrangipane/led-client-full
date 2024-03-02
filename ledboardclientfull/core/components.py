@@ -5,6 +5,7 @@ from ledboardclientfull import BoardIllumination
 # from ledboardclientfull.components.board_lister import BoardLister
 from ledboardclientfull.components.image_processor.image_processor import ScanImageProcessor
 # from ledboardclientfull.components.project_persistence import ProjectPersistence
+from ledboardclientfull.components.scanner import Scanner
 from ledboardclientfull.core.entities.configuration import Configuration
 from ledboardclientfull.python_extensions.singleton_metaclass import SingletonMetaclass
 
@@ -17,6 +18,7 @@ class Components(metaclass=SingletonMetaclass):
     board_lister = None  # FIXME : use an AbstractBoardLister
     image_processor = ScanImageProcessor()
     project_persistence = None  # FIXME : use an AbstractProjectPersistence
+    scanner = Scanner()
 
     def __getattribute__(self, item):
         attribute = super().__getattribute__(item)
