@@ -17,3 +17,4 @@ class Project:
     scan_capture_device_name: str = ""
     scan_mask: ScanMask = ScanMask()
     scan_settings: ScanSettings = ScanSettings()
+    serialization_version: int = 1  # Read only /!\

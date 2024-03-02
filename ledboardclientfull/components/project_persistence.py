@@ -1,9 +1,12 @@
 import json
+import logging
 from enum import Enum
 from ipaddress import IPv4Address
 
 from ledboardclientfull.core.entities.project import Project
 from ledboardclientfull.core.apis import APIs
+
+_logger = logging.getLogger(__name__)
 
 
 class ProjectPersistence:
@@ -16,6 +19,7 @@ class ProjectPersistence:
         self._update_components(Project())
 
     def save(self, filepath):
+        _logger.info(f"Save project to {filepath}")
         project = self._project_from_components()
 
         def _(o):
@@ -28,8 +32,12 @@ class ProjectPersistence:
             json.dump(project.to_dict(), project_file, indent=2, default=_)
 
     def load(self, filepath):
+        _logger.info(f"Load project from {filepath}")
         with open(filepath, "r") as project_file:
             data = json.load(project_file)
+
+        if data.get("serialization_version", 0) != 1:
+            raise ValueError(f"This project is not compatible with this serialization version")
 
         project = Project.from_dict(data)
         self._update_components(project)
