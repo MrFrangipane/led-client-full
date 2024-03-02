@@ -2,6 +2,7 @@ from PySide6.QtGui import QPixmap
 
 from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.entities.scan.settings import ScanSettings
+from ledboardclientfull.core.entities.scan.mask import ScanMask
 
 # FIXME: separate detecting devices from getting names list
 
@@ -38,8 +39,12 @@ def viewport_pixmap() -> QPixmap:
     return Components().image_processor.viewport_pixmap()
 
 
-def set_mask(mask_geometry) -> None:  # FIXME use entity
-    Components().image_processor.set_mask(mask_geometry)
+def set_mask(mask: ScanMask) -> None:
+    Components().image_processor.set_mask(mask)
+
+
+def get_mask():
+    return Components().image_processor.mask
 
 
 def reset_mask() -> None:

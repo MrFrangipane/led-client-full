@@ -4,6 +4,7 @@ from ledboardclientfull.core.entities.board.configuration import BoardConfigurat
 from ledboardclientfull.core.entities.board.illumination import BoardIllumination
 from ledboardclientfull.core.entities.board.list import BoardsList
 from ledboardclientfull.core.entities.pixel_type import PixelType
+from ledboardclientfull.core.entities.scan.mask import ScanMask
 
 
 #
