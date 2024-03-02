@@ -8,8 +8,8 @@ class BoardIllumination:
     type: BoardIlluminationType = BoardIlluminationType.Range
 
     led_single: int = 0
-    led_start: int = 0
-    led_end: int = 0
+    led_first: int = 0
+    led_last: int = 0
 
     r: int = 0
     g: int = 0

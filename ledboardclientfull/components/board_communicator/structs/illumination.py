@@ -9,8 +9,8 @@ from ledboardclientfull.core.entities.board.illumination import BoardIlluminatio
 class IlluminationStruct:
     type: IntegerType() = 0
     led_single: IntegerType() = 0
-    led_start: IntegerType() = 0
-    led_end: IntegerType() = 0
+    led_first: IntegerType() = 0
+    led_last: IntegerType() = 0
     r: IntegerType() = 0
     g: IntegerType() = 0
     b: IntegerType() = 0
