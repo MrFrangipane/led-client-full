@@ -50,7 +50,8 @@ class ScanImageProcessor:
         self.settings = settings
 
     def reset_mask(self):
-        self._np_mask.fill(255)
+        self.mask = ScanMask()
+        self._make_np_mask()
 
     def set_mask(self, mask: ScanMask):
         self.mask = mask
@@ -58,6 +59,11 @@ class ScanImageProcessor:
 
     def _make_np_mask(self):
         self._np_mask = np.zeros(self._np_frame.shape[:2], dtype="uint8")
+
+        if not self.mask.points:
+            self._np_mask.fill(255)
+            return
+
         cv2.fillPoly(self._np_mask, pts=[np.array(self.mask.points)], color=(255, 255, 255))
 
     def viewport_pixmap(self):
