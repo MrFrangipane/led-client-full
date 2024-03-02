@@ -1,5 +1,6 @@
 #
 # Entities
+from ledboardclientfull.core.entities.board.execution_mode import BoardExecutionMode
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
 from ledboardclientfull.core.entities.board.illumination import BoardIllumination
 from ledboardclientfull.core.entities.board.illumination_type import BoardIlluminationType

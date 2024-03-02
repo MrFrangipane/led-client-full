@@ -29,6 +29,7 @@ class ProjectPersistence:
                 return o.value
 
         with open(filepath, "w+") as project_file:
+            # FIXME: look here https://stackoverflow.com/questions/42710879/write-two-dimensional-list-to-json-file
             json.dump(project.to_dict(), project_file, indent=2, default=_)
 
     def load(self, filepath):

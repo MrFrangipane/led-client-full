@@ -84,3 +84,8 @@ def set_scan_result(result: ScanResult) -> None:
 
 def do_detection():
     Components().image_processor.viewport_pixmap()  # FIXME hacky
+
+
+def export_indexed_led_segment(filename: str, transmitter: int, division_count: int):
+    Components().segment_exporter.export(filename, transmitter, division_count)
+
