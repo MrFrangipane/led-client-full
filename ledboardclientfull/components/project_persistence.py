@@ -44,11 +44,16 @@ class ProjectPersistence:
 
     @staticmethod
     def _update_components(project: Project):
-        APIs().board.select_board(project.board_configuration)
-        APIs().illumination.illuminate(project.board_illumination)
-        APIs().scan.set_capture_device_name(project.scan_capture_device_name)
-        APIs().scan.set_settings(project.scan_settings)
-        APIs().scan.set_mask(project.scan_mask)
+        if project.board_configuration is not None:
+            APIs().board.select_board(project.board_configuration)
+        if project.board_illumination is not None:
+            APIs().illumination.illuminate(project.board_illumination)
+        if project.scan_capture_device_name:
+            APIs().scan.set_capture_device_name(project.scan_capture_device_name)
+        if project.scan_settings is not None:
+            APIs().scan.set_settings(project.scan_settings)
+        if project.scan_mask is not None:
+            APIs().scan.set_mask(project.scan_mask)
 
     @staticmethod
     def _project_from_components() -> Project:

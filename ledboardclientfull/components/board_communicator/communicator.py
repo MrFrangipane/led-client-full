@@ -39,6 +39,8 @@ class BoardCommunicator:
             configuration.serial_port_name = self.serial_communicator.serial_port_name
             return configuration
 
+        raise ValueError("Could not retrieve configuration")
+
     def illuminate(self, illumination: BoardIllumination):
         if self.serial_communicator.serial_port_name is None:
             return
@@ -53,3 +55,5 @@ class BoardCommunicator:
         if illumination_struct is not None:
             illumination = illumination_struct.to_entity()
             return illumination
+
+        raise ValueError("Could not retrieve illumination")

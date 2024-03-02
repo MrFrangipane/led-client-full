@@ -7,6 +7,8 @@ from ledboardclientfull.core.entities.board.illumination import BoardIlluminatio
 
 @dataclass
 class IlluminationStruct:
+    type: IntegerType() = 0
+    led_single: IntegerType() = 0
     led_start: IntegerType() = 0
     led_end: IntegerType() = 0
     r: IntegerType() = 0
@@ -16,7 +18,9 @@ class IlluminationStruct:
 
     @staticmethod
     def from_entity(source: BoardIllumination):
-        return IlluminationStruct(**vars(source))
+        as_dict = vars(source)
+        as_dict["type"] = source.type.value
+        return IlluminationStruct(**as_dict)
 
     def to_entity(self):
         return BoardIllumination(**vars(self))

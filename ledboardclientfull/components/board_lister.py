@@ -18,9 +18,11 @@ class BoardLister:
         self._boards = BoardsList()
         for port_name in Components().board_communicator.available_serial_port_names():
             Components().board_communicator.set_serial_port_name(port_name)
-            configuration = Components().board_communicator.get_configuration()
-            if configuration is not None:
+            try:
+                configuration = Components().board_communicator.get_configuration()
                 self._boards[configuration.hardware_id] = configuration
+            except ValueError:
+                pass
 
         _logger.info(f"Detected {len(self._boards)} boards")
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from ipaddress import IPv4Address
-from ledboardclientfull.core.entities.pixel_type import PixelType
+from ledboardclientfull.core.entities.board.pixel_type import PixelType
 
 
 @dataclass

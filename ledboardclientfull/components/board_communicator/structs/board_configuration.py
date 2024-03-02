@@ -5,7 +5,7 @@ from ipaddress import IPv4Address
 from pythonarduinoserial.types import *
 
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
-from ledboardclientfull.core.entities.pixel_type import PixelType
+from ledboardclientfull.core.entities.board.pixel_type import PixelType
 
 
 @dataclass
