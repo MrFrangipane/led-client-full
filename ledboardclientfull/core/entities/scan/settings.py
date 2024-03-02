@@ -6,3 +6,5 @@ class ScanSettings:
     viewport_blur: bool = False
     viewport_brightest_pixel: bool = False
     blur_radius: int = 0
+    led_first: int = 0
+    led_last: int = 0
