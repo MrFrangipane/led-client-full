@@ -34,22 +34,24 @@ class Scanner:
         self._is_scanning = True
 
     def step_scan(self):
+        if self._current_led > self._settings.led_last:
+            self.stop_scan()
+
         illumination = copy(self._backup_illumination)
         illumination.type = BoardIlluminationType.Single
         illumination.led_single = self._current_led
         APIs().illumination.illuminate(illumination)
 
-        time.sleep(0.1)
+        time.sleep(0.1)  # FIXME hacky
+        APIs().scan.do_detection()
+
         x, y = APIs().scan.get_detection_coordinates()
         self.scan_result.detected_points[self._current_led] = DetectionPoint(
             led_number=self._current_led,
-            x=x, y=y,
-            lightness=0  # FIXME use it ?
+            x=x, y=y
         )
 
         self._current_led += 1
-        if self._current_led > self._settings.led_last:
-            self.stop_scan()
 
     def stop_scan(self):
         self._current_led = 0

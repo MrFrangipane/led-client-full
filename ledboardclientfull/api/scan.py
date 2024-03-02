@@ -76,3 +76,7 @@ def get_detection_coordinates() -> Tuple[int, int]:
 
 def get_scan_result() -> ScanResult:
     return Components().scanner.scan_result
+
+
+def do_detection():
+    Components().image_processor.viewport_pixmap()  # FIXME hacky
