@@ -1,9 +1,9 @@
 #
 # Entities
-from ledboardclientfull.core.board.configuration import BoardConfiguration
-from ledboardclientfull.core.board.illumination import BoardIllumination
-from ledboardclientfull.core.board.list import BoardsList
-from ledboardclientfull.core.pixel_type import PixelType
+from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
+from ledboardclientfull.core.entities.board.illumination import BoardIllumination
+from ledboardclientfull.core.entities.board.list import BoardsList
+from ledboardclientfull.core.entities.pixel_type import PixelType
 
 
 #

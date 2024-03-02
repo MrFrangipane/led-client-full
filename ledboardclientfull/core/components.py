@@ -5,7 +5,7 @@ from ledboardclientfull import BoardIllumination
 # from ledboardclientfull.components.board_lister import BoardLister
 from ledboardclientfull.components.image_processor.image_processor import ScanImageProcessor
 # from ledboardclientfull.components.project_persistence import ProjectPersistence
-from ledboardclientfull.core.configuration import Configuration
+from ledboardclientfull.core.entities.configuration import Configuration
 from ledboardclientfull.python_extensions.singleton_metaclass import SingletonMetaclass
 
 

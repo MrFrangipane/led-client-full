@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pythonarduinoserial.types import *
 
-from ledboardclientfull.core.board.illumination import BoardIllumination
+from ledboardclientfull.core.entities.board.illumination import BoardIllumination
 
 
 @dataclass

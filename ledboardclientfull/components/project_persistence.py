@@ -2,7 +2,7 @@ import json
 from enum import Enum
 from ipaddress import IPv4Address
 
-from ledboardclientfull.core.project import Project
+from ledboardclientfull.core.entities.project import Project
 from ledboardclientfull.core.apis import APIs
 
 

@@ -1,7 +1,7 @@
 from PySide6.QtGui import QPixmap
 
 from ledboardclientfull.core.components import Components
-from ledboardclientfull.core.scan.settings import ScanSettings
+from ledboardclientfull.core.entities.scan.settings import ScanSettings
 
 
 def get_capture_devices_names() -> list[str]:

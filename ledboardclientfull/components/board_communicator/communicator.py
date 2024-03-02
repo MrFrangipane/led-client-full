@@ -1,12 +1,12 @@
 import logging
 
 from serial.tools.list_ports import comports as list_serial_ports
+
 from pythonarduinoserial.communicator import SerialCommunicator
 
 from ledboardclientfull.components.board_communicator.structs import BoardConfigurationStruct, IlluminationStruct, all_structs
-from ledboardclientfull.core.board.configuration import BoardConfiguration
-from ledboardclientfull.core.board.illumination import BoardIllumination
-from ledboardclientfull.core.components import Components
+from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
+from ledboardclientfull.core.entities.board.illumination import BoardIllumination
 
 
 _logger = logging.getLogger(__name__)
@@ -40,7 +40,6 @@ class BoardCommunicator:
             return configuration
 
     def illuminate(self, illumination: BoardIllumination):
-        Components().board_illumination = illumination
         if self.serial_communicator.serial_port_name is None:
             return
 

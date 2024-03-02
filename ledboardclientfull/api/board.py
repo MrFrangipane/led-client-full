@@ -1,6 +1,6 @@
 
-from ledboardclientfull.core.board.configuration import BoardConfiguration
-from ledboardclientfull.core.board.list import BoardsList
+from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
+from ledboardclientfull.core.entities.board.list import BoardsList
 from ledboardclientfull.core.components import Components
 
 

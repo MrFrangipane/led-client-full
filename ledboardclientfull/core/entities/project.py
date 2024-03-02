@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
 
-from ledboardclientfull.core.board.configuration import BoardConfiguration
-from ledboardclientfull.core.board.illumination import BoardIllumination
-from ledboardclientfull.core.scan.mask import ScanMask
-from ledboardclientfull.core.scan.settings import ScanSettings
+from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
+from ledboardclientfull.core.entities.board.illumination import BoardIllumination
+from ledboardclientfull.core.entities.scan.mask import ScanMask
+from ledboardclientfull.core.entities.scan.settings import ScanSettings
 
 
 @dataclass_json

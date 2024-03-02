@@ -4,7 +4,7 @@ from numpy.typing import ArrayLike
 from PySide6.QtGui import QPixmap, QImage
 
 from ledboardclientfull.components.image_processor.video_capture import VideoCapture
-from ledboardclientfull.core.scan.settings import ScanSettings
+from ledboardclientfull.core.entities.scan.settings import ScanSettings
 
 
 class ScanImageProcessor:
