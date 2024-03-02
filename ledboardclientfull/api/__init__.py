@@ -14,8 +14,8 @@ def init_ledboard_client():
 
     #
     # APIs
-    from ledboardclientfull import board
-    APIs().board = board
+    from ledboardclientfull import board_api
+    APIs().board = board_api
 
-    from ledboardclientfull import illumination
-    APIs().illumination = illumination
+    from ledboardclientfull import illumination_api
+    APIs().illumination = illumination_api
