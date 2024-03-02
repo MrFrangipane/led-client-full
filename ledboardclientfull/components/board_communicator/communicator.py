@@ -32,7 +32,7 @@ class BoardCommunicator:
         _logger.info(f"Configured board on {self.serial_communicator.serial_port_name} {configuration}")
 
     def get_configuration(self) -> BoardConfiguration:
-        _logger.info(f"Get board configuration from {self.serial_communicator.serial_port_name}")
+        _logger.debug(f"Get board configuration from {self.serial_communicator.serial_port_name}")
         configuration_struct: BoardConfigurationStruct = self.serial_communicator.receive(BoardConfigurationStruct)
         if configuration_struct is not None:
             configuration = configuration_struct.to_entity()
@@ -47,3 +47,10 @@ class BoardCommunicator:
         illumination_struct = IlluminationStruct.from_entity(illumination)
         self.serial_communicator.send(illumination_struct)
         _logger.debug(f"Illuminated {self.serial_communicator.serial_port_name} {illumination}")
+
+    def get_illumination(self) -> BoardIllumination:
+        _logger.debug(f"Get board illumination from {self.serial_communicator.serial_port_name}")
+        illumination_struct: IlluminationStruct = self.serial_communicator.receive(IlluminationStruct)
+        if illumination_struct is not None:
+            illumination = illumination_struct.to_entity()
+            return illumination

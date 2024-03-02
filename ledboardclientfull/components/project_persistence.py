@@ -3,7 +3,7 @@ from enum import Enum
 from ipaddress import IPv4Address
 
 from ledboardclientfull.core.project import Project
-from ledboardclientfull.core.components import Components
+from ledboardclientfull.core.apis import APIs
 
 
 class ProjectPersistence:
@@ -36,13 +36,14 @@ class ProjectPersistence:
 
     @staticmethod
     def _update_components(project: Project):
-        Components().board_communicator.set_serial_port_name(project.board_configuration.serial_port_name)
+        APIs().board.select_board(project.board_configuration)
+        APIs().illumination.illuminate(project.board_illumination)
 
     @staticmethod
     def _project_from_components() -> Project:
         project = Project()
 
-        project.board_configuration = Components().board_communicator.get_configuration()
-        project.board_illumination = Components().board_illumination
+        project.board_configuration = APIs().board.get_configuration()
+        project.board_illumination = APIs().illumination.get_illumination()
 
         return project

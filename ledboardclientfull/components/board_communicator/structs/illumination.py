@@ -17,3 +17,6 @@ class IlluminationStruct:
     @staticmethod
     def from_entity(source: BoardIllumination):
         return IlluminationStruct(**vars(source))
+
+    def to_entity(self):
+        return BoardIllumination(**vars(self))
