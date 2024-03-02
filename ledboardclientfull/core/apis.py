@@ -8,6 +8,7 @@ class APIs(metaclass=SingletonMetaclass):
     # FIXME find a way to autocomplete (abstract classes ?)
     board = None
     illumination = None
+    scan = None
 
     def __getattribute__(self, item):
         attribute = super().__getattribute__(item)

@@ -19,3 +19,6 @@ def init_ledboard_client():
 
     from ledboardclientfull import illumination_api
     APIs().illumination = illumination_api
+
+    from ledboardclientfull import scan_api
+    APIs().scan = scan_api

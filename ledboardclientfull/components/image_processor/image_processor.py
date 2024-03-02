@@ -10,15 +10,36 @@ from ledboardclientfull.core.entities.scan.settings import ScanSettings
 class ScanImageProcessor:
     def __init__(self):
         self._video_capture = VideoCapture()
+        self._device_index = -1
+        self._device_names: list[str] = list()
         self.settings = ScanSettings()
         self._frame: ArrayLike = None
         self._mask: ArrayLike = None
 
     def get_capture_devices_names(self) -> list[str]:
-        return self._video_capture.get_devices_names()
+        self._device_names = self._video_capture.get_devices_names()
+        return self._device_names
 
     def set_capture_device(self, device_index: int):
         self._video_capture.open(device_index)
+        self._device_index = device_index
+
+    def set_capture_device_name(self, name: str) -> None:
+        if not name:
+            return
+
+        if not self._device_names:
+            self.get_capture_devices_names()  # FIXME: separate detecting devices from getting names list
+
+        self.set_capture_device(self._device_names.index(name))
+
+    def video_capture_index(self) -> int:
+        return self._device_index
+
+    def capture_device_name(self) -> str:
+        if self._device_index == -1:
+            return ""
+        return self._device_names[self._device_index]
 
     def set_scan_settings(self, settings: ScanSettings):
         self.settings = settings

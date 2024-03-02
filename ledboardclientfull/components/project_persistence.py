@@ -38,6 +38,7 @@ class ProjectPersistence:
     def _update_components(project: Project):
         APIs().board.select_board(project.board_configuration)
         APIs().illumination.illuminate(project.board_illumination)
+        APIs().scan.set_capture_device_name(project.scan_capture_device_name)
 
     @staticmethod
     def _project_from_components() -> Project:
@@ -45,5 +46,6 @@ class ProjectPersistence:
 
         project.board_configuration = APIs().board.get_configuration()
         project.board_illumination = APIs().illumination.get_illumination()
+        project.scan_capture_device_name = APIs().scan.capture_device_name()
 
         return project
