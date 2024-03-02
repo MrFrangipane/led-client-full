@@ -48,12 +48,15 @@ class ProjectPersistence:
             APIs().board.select_board(project.board_configuration)
         if project.board_illumination is not None:
             APIs().illumination.illuminate(project.board_illumination)
+
         if project.scan_capture_device_name:
             APIs().scan.set_capture_device_name(project.scan_capture_device_name)
-        if project.scan_settings is not None:
-            APIs().scan.set_settings(project.scan_settings)
         if project.scan_mask is not None:
             APIs().scan.set_mask(project.scan_mask)
+        if project.scan_result is not None:
+            APIs().scan.set_scan_result(project.scan_result)
+        if project.scan_settings is not None:
+            APIs().scan.set_settings(project.scan_settings)
 
     @staticmethod
     def _project_from_components() -> Project:
@@ -61,8 +64,10 @@ class ProjectPersistence:
 
         project.board_configuration = APIs().board.get_configuration()
         project.board_illumination = APIs().illumination.get_illumination()
+
         project.scan_capture_device_name = APIs().scan.capture_device_name()
-        project.scan_settings = APIs().scan.get_settings()
         project.scan_mask = APIs().scan.get_mask()
+        project.scan_result = APIs().scan.get_scan_result()
+        project.scan_settings = APIs().scan.get_settings()
 
         return project
