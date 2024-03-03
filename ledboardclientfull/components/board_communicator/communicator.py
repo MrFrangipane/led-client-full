@@ -31,8 +31,8 @@ class BoardCommunicator:
         self.serial_communicator.set_port_name(name)
 
     def configure(self, configuration: BoardConfiguration):
+        _logger.info(f"Configuring board on {self.serial_communicator.serial_port_name} {configuration}")
         self.serial_communicator.send(BoardConfigurationStruct.from_entity(configuration))
-        _logger.info(f"Configured board on {self.serial_communicator.serial_port_name} {configuration}")
 
     def get_configuration(self) -> BoardConfiguration:
         _logger.debug(f"Get board configuration from {self.serial_communicator.serial_port_name}")
@@ -49,8 +49,8 @@ class BoardCommunicator:
             return
 
         illumination_struct = IlluminationStruct.from_entity(illumination)
+        _logger.debug(f"Illuminating {self.serial_communicator.serial_port_name} {illumination}")
         self.serial_communicator.send(illumination_struct)
-        _logger.debug(f"Illuminated {self.serial_communicator.serial_port_name} {illumination}")
 
     def get_illumination(self) -> BoardIllumination:
         _logger.debug(f"Get board illumination from {self.serial_communicator.serial_port_name}")
@@ -63,5 +63,5 @@ class BoardCommunicator:
 
     def set_mapping_tree_structure(self, structure: MappingTreeStructure):
         mapping_tree_structure_struct = MappingTreeStructureStruct.from_entity(structure)
+        _logger.info(f"Sending MappingTreeStructure {self.serial_communicator.serial_port_name}")
         self.serial_communicator.send(mapping_tree_structure_struct)
-        _logger.debug(f"Sent MappingTreeStructure {self.serial_communicator.serial_port_name}")

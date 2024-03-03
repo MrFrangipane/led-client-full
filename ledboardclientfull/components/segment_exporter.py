@@ -5,6 +5,7 @@ from ledboardclientfull.core.entities.scan.scan_result import ScanResult
 from ledboardclientfull.core.components import Components  # FIXME should we use an API to access internal settings ?
 
 
+# FIXME rename to MappingTree[Something]
 class SegmentExporter:
     def __init__(self):
         self._scan_result: ScanResult = None
@@ -84,11 +85,21 @@ class SegmentExporter:
 
 
 if __name__ == "__main__":
+    import logging
     import os.path
-    from ledboardclientfull import init_ledboard_client, project_api, scan_api
+
+    from ledboardclientfull import init_ledboard_client, BoardExecutionMode, board_api, project_api, scan_api
+
+    logging.basicConfig(level=logging.INFO)
 
     init_ledboard_client()
     project_api.load(os.path.expanduser("~/ledboard-scan-ok.json"))
+
+    configuration = board_api.get_configuration()
+    configuration.execution_mode = BoardExecutionMode.ArtNet
+    configuration.do_save_and_reboot = False  # FIXME weird, no ?
+    board_api.set_configuration(configuration)
+
     scan_api.export_indexed_led_segment(
         filename="exported-segments.json",
         division_count=64
