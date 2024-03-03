@@ -23,7 +23,7 @@ class IlluminationStruct:
         as_dict["type"] = source.type.value
         return IlluminationStruct(**as_dict)
 
-    def to_entity(self):
+    def to_entity(self) -> BoardIllumination:
         illumination = BoardIllumination(**vars(self))
         illumination.type = BoardIlluminationType(self.type)
         return illumination

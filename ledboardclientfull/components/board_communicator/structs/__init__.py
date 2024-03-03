@@ -1,10 +1,12 @@
 from ledboardclientfull.components.board_communicator.structs.board_configuration import BoardConfigurationStruct
 from ledboardclientfull.components.board_communicator.structs.illumination import IlluminationStruct
+from ledboardclientfull.components.board_communicator.structs.led_tree_leaf import LEDTreeLeafStruct
 
 
 all_structs = [
     BoardConfigurationStruct,
-    IlluminationStruct
+    IlluminationStruct,
+    LEDTreeLeafStruct
 ]
 
 

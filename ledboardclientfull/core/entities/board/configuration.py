@@ -12,14 +12,17 @@ class BoardConfiguration:
     execution_mode: BoardExecutionMode = BoardExecutionMode.Illumination
 
     serial_port_name: str = ""
-    hardware_revision: int = 1
     firmware_revision: int = 1
     hardware_id: str = ""
+    hardware_revision: int = 1
 
     ip_address: IPv4Address = IPv4Address('0.0.0.0')
-    universe: int = -1
+    universe_a: int = -1
+    universe_b: int = -1
+    universe_c: int = -1
 
-    pixel_per_transmitter: int = 150
+    pixel_per_transmitter: int = 64  # value for Blitz (half totem)
+    pixel_per_universe: int = 128  # max RGBW channels
     pixel_type: PixelType = PixelType.GRBW
 
     do_save_and_reboot: bool = False
