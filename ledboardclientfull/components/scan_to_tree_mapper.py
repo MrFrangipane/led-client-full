@@ -88,5 +88,5 @@ if __name__ == "__main__":
     board_api.set_configuration(configuration)
 
     scan_api.map_to_tree_and_send_to_board(
-        division_count=64
+        division_count=int(configuration.pixel_per_universe / 2)  # two half-totem per universe
     )

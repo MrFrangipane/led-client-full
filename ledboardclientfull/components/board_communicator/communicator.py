@@ -77,5 +77,5 @@ class BoardCommunicator:
 
     def send_mapping_tree_leaf(self, leaf: MappingTreeLeaf):
         mapping_tree_leaf_struct = MappingTreeLeafStruct.from_entity(leaf)
-        _logger.info(f"Sending MappingTreeLeaf {self.serial_communicator.serial_port_name} {leaf}")
+        _logger.debug(f"Sending MappingTreeLeaf {self.serial_communicator.serial_port_name} {leaf}")
         self.serial_communicator.send(mapping_tree_leaf_struct)
