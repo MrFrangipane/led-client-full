@@ -25,7 +25,8 @@ class BoardConfigurationStruct:
     universe_b: IntegerType() = -1
     universe_c: IntegerType() = -1
 
-    pixel_per_transmitter: IntegerType() = 64
+    led_per_transmitter: IntegerType() = 250
+
     pixel_per_universe: IntegerType() = Components().configuration.pixel_per_universe
     pixel_type: IntegerType() = 0
 
@@ -50,7 +51,8 @@ class BoardConfigurationStruct:
         new.universe_b = source.universe_b
         new.universe_c = source.universe_c
 
-        new.pixel_per_transmitter = source.pixel_per_transmitter
+        new.led_per_transmitter = source.led_per_transmitter
+
         new.pixel_per_universe = source.pixel_per_universe
         new.pixel_type = source.pixel_type.value
 
@@ -75,7 +77,8 @@ class BoardConfigurationStruct:
         new.universe_b = self.universe_b
         new.universe_c = self.universe_c
 
-        new.pixel_per_transmitter = self.pixel_per_transmitter
+        new.led_per_transmitter = self.led_per_transmitter
+
         new.pixel_per_universe = self.pixel_per_universe
         new.pixel_type = PixelType(self.pixel_type)
 

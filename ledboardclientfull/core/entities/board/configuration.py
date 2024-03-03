@@ -22,7 +22,8 @@ class BoardConfiguration:
     universe_b: int = -1
     universe_c: int = -1
 
-    pixel_per_transmitter: int = 64  # value for Blitz (half totem)
+    led_per_transmitter: int = 250  # rough value for Blitz (half totem)
+
     pixel_per_universe: int = Components().configuration.pixel_per_universe
     pixel_type: PixelType = PixelType.GRBW
 
