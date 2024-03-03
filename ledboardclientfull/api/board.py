@@ -1,6 +1,7 @@
 from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
 from ledboardclientfull.core.entities.board.list import BoardsList
+from ledboardclientfull.core.entities.mapping_tree.leaf import MappingTreeLeaf
 from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure
 
 
@@ -37,3 +38,7 @@ def set_configuration(configuration: BoardConfiguration):
 # Mapping Tree
 def set_mapping_tree_structure(structure: MappingTreeStructure):
     Components().board_communicator.set_mapping_tree_structure(structure)
+
+
+def send_mapping_tree_leaf(leaf: MappingTreeLeaf):
+    Components().board_communicator.send_mapping_tree_leaf(leaf)

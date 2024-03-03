@@ -86,5 +86,5 @@ def do_detection():
     Components().image_processor.viewport_pixmap()  # FIXME hacky
 
 
-def export_indexed_led_segment(filename: str, division_count: int):
-    Components().segment_exporter.export(filename, division_count)
+def map_to_tree_and_send_to_board(division_count: int):
+    Components().scan_to_tree_mapper.map_to_tree_and_send_to_board(division_count)

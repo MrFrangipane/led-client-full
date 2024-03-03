@@ -4,7 +4,7 @@ from ledboardclientfull.components.board_communicator.communicator import BoardC
 from ledboardclientfull.components.board_lister import BoardLister
 from ledboardclientfull.components.project_persistence import ProjectPersistence
 from ledboardclientfull.components.scanner import Scanner
-from ledboardclientfull.components.segment_exporter import SegmentExporter
+from ledboardclientfull.components.scan_to_tree_mapper import ScanToTreeMapper
 
 from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.apis import APIs
@@ -18,7 +18,7 @@ def init_ledboard_client():
     Components().board_lister = BoardLister()
     Components().project_persistence = ProjectPersistence()
     Components().scanner = Scanner()
-    Components().segment_exporter = SegmentExporter()
+    Components().scan_to_tree_mapper = ScanToTreeMapper()
 
 
     #

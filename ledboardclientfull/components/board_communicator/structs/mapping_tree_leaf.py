@@ -7,9 +7,10 @@ from ledboardclientfull.core.entities.mapping_tree.leaf import MappingTreeLeaf
 
 @dataclass
 class MappingTreeLeafStruct:
-    led_number: IntegerType() = 0
+    led_id: IntegerType() = 0
+    mapping_id: IntegerType() = 0
     pixel_number: IntegerType() = 0
-    universe_number: IntegerType() = -1
+    universe_number: IntegerType() = 0
 
     @staticmethod
     def from_entity(source: MappingTreeLeaf):

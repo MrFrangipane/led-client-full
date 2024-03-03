@@ -20,7 +20,7 @@ class Components(metaclass=SingletonMetaclass):
     image_processor = ScanImageProcessor()
     project_persistence = None  # FIXME : use an AbstractProjectPersistence
     scanner = None  # FIXME : use an AbstractScanner
-    segment_exporter = None  # FIXME : use an AbstractSegmentExporter
+    scan_to_tree_mapper = None  # FIXME : use an AbstractSegmentExporter
 
     def __getattribute__(self, item):
         attribute = super().__getattribute__(item)

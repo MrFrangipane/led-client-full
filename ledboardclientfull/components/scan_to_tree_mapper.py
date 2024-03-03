@@ -5,8 +5,7 @@ from ledboardclientfull.core.entities.scan.scan_result import ScanResult
 from ledboardclientfull.core.components import Components  # FIXME should we use an API to access internal settings ?
 
 
-# FIXME rename to MappingTree[Something]
-class SegmentExporter:
+class ScanToTreeMapper:
     def __init__(self):
         self._scan_result: ScanResult = None
 
@@ -16,16 +15,21 @@ class SegmentExporter:
         self._pixels: dict[int, list[int]] = dict()
         self._pixel_count: int = 0
 
-    def export(self, filename, pixel_count):
+    def map_to_tree_and_send_to_board(self, pixel_count):  # FIXME split and rename
         self._pixel_count = pixel_count
         self._scan_result: ScanResult = APIs().scan.get_scan_result()
 
         self._find_min_max()
         self._group_by_pixels()
 
-        # print(self._make_c_vectors_definitions())
         tree_structure = self._make_tree_structure()
         APIs().board.set_mapping_tree_structure(tree_structure)
+
+        for pixel_number, leds in sorted(self._pixels.items()):
+            for mapping_id, led_id in enumerate(leds):
+                APIs().board.send_mapping_tree_leaf(
+                    MappingTreeLeaf(led_id, mapping_id, pixel_number, universe_number=0)
+                )
 
     def _find_min_max(self):
         self._min_x = None
@@ -66,23 +70,6 @@ class SegmentExporter:
 
         return tree_structure
 
-    def _make_c_vectors_definitions(self) -> str:
-        content = ["const std::vector<std::vector<int>> ledTree {"]
-        for pixel in range(Components().configuration.pixel_per_universe):
-            leds = self._pixels.get(pixel, None)
-            if leds is not None:
-                line = "    {" + ', '.join([str(led) for led in leds]) + "}"
-            else:
-                line = "    {}"
-
-            if pixel < 127:
-                line += ","
-
-            content.append(line)
-        content.append("};")
-
-        return "\n".join(content)
-
 
 if __name__ == "__main__":
     import logging
@@ -100,7 +87,6 @@ if __name__ == "__main__":
     configuration.do_save_and_reboot = False  # FIXME weird, no ?
     board_api.set_configuration(configuration)
 
-    scan_api.export_indexed_led_segment(
-        filename="exported-segments.json",
+    scan_api.map_to_tree_and_send_to_board(
         division_count=64
     )
