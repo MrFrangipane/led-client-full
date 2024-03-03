@@ -36,5 +36,20 @@ class SegmentExporter:
             else:
                 divisions[division].append(point.led_number)
 
-        from pprint import pprint
-        pprint(divisions)
+        content = ["const std::vector<std::vector<int>> divisions {"]
+        for pixel in range(128):
+            leds = divisions.get(pixel, None)
+            if leds is not None:
+                line = "    {" + ', '.join([str(led) for led in leds]) + "}"
+            else:
+                line = "    {}"
+
+            if pixel < 127:
+                line += ","
+
+            content.append(line)
+        content.append("};")
+
+        print("")
+        print("\n".join(content))
+        print("")
