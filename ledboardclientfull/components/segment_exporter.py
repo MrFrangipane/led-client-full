@@ -2,6 +2,7 @@ from ledboardclientfull.core.apis import APIs
 from ledboardclientfull.core.entities.mapping_tree.leaf import MappingTreeLeaf
 from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure, PixelStructure
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
+from ledboardclientfull.core.components import Components  # FIXME should we use an API to access internal settings ?
 
 
 class SegmentExporter:
@@ -23,7 +24,7 @@ class SegmentExporter:
 
         # print(self._make_c_vectors_definitions())
         tree_structure = self._make_tree_structure()
-        APIs().board.set_led_tree_structure(tree_structure)
+        APIs().board.set_mapping_tree_structure(tree_structure)
 
     def _find_min_max(self):
         self._min_x = None
@@ -66,7 +67,7 @@ class SegmentExporter:
 
     def _make_c_vectors_definitions(self) -> str:
         content = ["const std::vector<std::vector<int>> ledTree {"]
-        for pixel in range(128):
+        for pixel in range(Components().configuration.pixel_per_universe):
             leds = self._pixels.get(pixel, None)
             if leds is not None:
                 line = "    {" + ', '.join([str(led) for led in leds]) + "}"

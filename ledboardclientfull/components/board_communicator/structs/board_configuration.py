@@ -7,6 +7,7 @@ from pythonarduinoserial.types import *
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
 from ledboardclientfull.core.entities.board.execution_mode import BoardExecutionMode
 from ledboardclientfull.core.entities.board.pixel_type import PixelType
+from ledboardclientfull.core.components import Components
 
 
 @dataclass
@@ -25,7 +26,7 @@ class BoardConfigurationStruct:
     universe_c: IntegerType() = -1
 
     pixel_per_transmitter: IntegerType() = 64
-    pixel_per_universe: IntegerType() = 128
+    pixel_per_universe: IntegerType() = Components().configuration.pixel_per_universe
     pixel_type: IntegerType() = 0
 
     # 4 bytes ints instead of bool to avoid manual bytes padding

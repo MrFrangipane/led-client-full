@@ -1,6 +1,11 @@
+from ledboardclientfull import BoardIllumination
+
 from ledboardclientfull.components.board_communicator.communicator import BoardCommunicator
 from ledboardclientfull.components.board_lister import BoardLister
 from ledboardclientfull.components.project_persistence import ProjectPersistence
+from ledboardclientfull.components.scanner import Scanner
+from ledboardclientfull.components.segment_exporter import SegmentExporter
+
 from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.apis import APIs
 
@@ -8,9 +13,13 @@ from ledboardclientfull.core.apis import APIs
 def init_ledboard_client():
     #
     # Components
-    Components().project_persistence = ProjectPersistence()
     Components().board_communicator = BoardCommunicator()
+    Components().board_illumination = BoardIllumination()
     Components().board_lister = BoardLister()
+    Components().project_persistence = ProjectPersistence()
+    Components().scanner = Scanner()
+    Components().segment_exporter = SegmentExporter()
+
 
     #
     # APIs

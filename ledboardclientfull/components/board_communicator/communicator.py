@@ -4,9 +4,12 @@ from serial.tools.list_ports import comports as list_serial_ports
 
 from pythonarduinoserial.communicator import SerialCommunicator
 
-from ledboardclientfull.components.board_communicator.structs import BoardConfigurationStruct, IlluminationStruct, all_structs
+from ledboardclientfull.components.board_communicator.structs import (
+    BoardConfigurationStruct, IlluminationStruct, MappingTreeStructureStruct, all_structs
+)
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
 from ledboardclientfull.core.entities.board.illumination import BoardIllumination
+from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure
 
 
 _logger = logging.getLogger(__name__)
@@ -57,3 +60,8 @@ class BoardCommunicator:
             return illumination
 
         raise ValueError("Could not retrieve illumination")
+
+    def set_mapping_tree_structure(self, structure: MappingTreeStructure):
+        mapping_tree_structure_struct = MappingTreeStructureStruct.from_entity(structure)
+        self.serial_communicator.send(mapping_tree_structure_struct)
+        _logger.debug(f"Sent MappingTreeStructure {self.serial_communicator.serial_port_name}")
