@@ -42,7 +42,11 @@ class MappingTreeStructureStruct:
                 break
             univ_c[pixel.index] = pixel.led_count
 
-        new = MappingTreeStructureStruct([univ_a, univ_b, univ_c])
+        new = MappingTreeStructureStruct(
+            universe_a_pixels_led_count=univ_a,
+            universe_b_pixels_led_count=univ_b,
+            universe_c_pixels_led_count=univ_c
+        )
 
         return new
 
