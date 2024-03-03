@@ -2,7 +2,6 @@ from ledboardclientfull.core.apis import APIs
 from ledboardclientfull.core.entities.mapping_tree.leaf import MappingTreeLeaf
 from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure, PixelStructure
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
-from ledboardclientfull.core.components import Components  # FIXME should we use an API to access internal settings ?
 
 
 class ScanToTreeMapper:
@@ -81,12 +80,15 @@ if __name__ == "__main__":
 
     init_ledboard_client()
     project_api.load(os.path.expanduser("~/ledboard-scan-ok.json"))
-
     configuration = board_api.get_configuration()
-    configuration.execution_mode = BoardExecutionMode.ArtNet
-    configuration.do_save_and_reboot = False  # FIXME weird, no ?
-    board_api.set_configuration(configuration)
 
     scan_api.map_to_tree_and_send_to_board(
         division_count=int(configuration.pixel_per_universe / 2)  # two half-totem per universe
     )
+
+    configuration.universe_a = 0
+    configuration.universe_b = 1
+    configuration.universe_c = 2
+    configuration.execution_mode = BoardExecutionMode.ArtNet
+    configuration.do_save_and_reboot = True
+    board_api.set_configuration(configuration)
