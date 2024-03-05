@@ -36,6 +36,8 @@ class Scanner:
         self._current_led = self._settings.led_first
         self._is_scanning = True
 
+        _logger.info(f"Starting scan {self._settings}")
+
     def step_scan(self):
         if self._current_led > self._settings.led_last:
             self.stop_scan()
@@ -46,17 +48,17 @@ class Scanner:
         illumination.led_single = self._current_led
         APIs().illumination.illuminate(illumination)
 
-        time.sleep(0.2)  # FIXME: make this a ScanSetting
+        time.sleep(self._settings.detection_time_interval_ms / 1000.0)
         APIs().scan.do_detection()
 
         x, y, value = APIs().scan.get_detection_coordinates()
-        if value > 225:  # FIXME : make this a setting
+        if value > self._settings.detection_value_threshold:
             new = DetectionPoint(
                 led_number=self._current_led,
                 x=x, y=y
             )
             self.scan_result.detected_points[self._current_led] = new
-            _logger.info(f"Detected LED {self._current_led}: {new} (v={value})")
+            _logger.info(f"Detected LED {new} (v={value})")
         else:
             _logger.info(f"Skipped LED {self._current_led} (v={value})")
 

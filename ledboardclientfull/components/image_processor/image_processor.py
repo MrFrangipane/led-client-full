@@ -85,11 +85,9 @@ class ScanImageProcessor:
 
         self._np_frame = cv2.bitwise_and(self._np_frame, self._np_frame, mask=self._np_mask)
 
-        if self.settings.viewport_brightest_pixel:
-            gray = cv2.cvtColor(self._np_frame, cv2.COLOR_RGB2GRAY)  # is it BGR ?
-            _, maximum_v, _, (maximum_x, maximum_y) = cv2.minMaxLoc(gray)
-            self.detection_coordinates = maximum_x, maximum_y, maximum_v
-            cv2.circle(self._np_frame, (maximum_x, maximum_y), 5, (255, 0, 0), -1)
+        gray = cv2.cvtColor(self._np_frame, cv2.COLOR_RGB2GRAY)  # is it BGR ?
+        _, maximum_v, _, (maximum_x, maximum_y) = cv2.minMaxLoc(gray)
+        self.detection_coordinates = maximum_x, maximum_y, maximum_v
 
         height, width, channel = self._np_frame.shape
         bytes_per_line = 3 * width

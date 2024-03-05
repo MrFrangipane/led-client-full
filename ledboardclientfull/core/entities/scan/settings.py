@@ -8,3 +8,5 @@ class ScanSettings:
     blur_radius: int = 0
     led_first: int = 0
     led_last: int = 0
+    detection_value_threshold: int = 230
+    detection_time_interval_ms: int = 200
