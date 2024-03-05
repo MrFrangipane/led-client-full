@@ -86,5 +86,5 @@ def do_detection():
     Components().image_processor.viewport_pixmap()  # FIXME hacky
 
 
-def map_to_tree_and_send_to_board(division_count: int, universe_number: int):
-    Components().scan_to_tree_mapper.map_to_tree_and_send_to_board(division_count, universe_number)
+def map_to_tree_and_send_to_board(division_count: int, segment_to_universe_map: dict[int, int]):
+    Components().scan_to_tree_mapper.map_to_tree_and_send_to_board(division_count, segment_to_universe_map)

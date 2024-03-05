@@ -14,7 +14,7 @@ class ScanToTreeMapper:
         self._pixels: dict[int, list[int]] = dict()
         self._pixel_count: int = 0
 
-    def map_to_tree_and_send_to_board(self, pixel_count, universe_number):  # FIXME split and rename
+    def map_to_tree_and_send_to_board(self, pixel_count, segment_to_universe_map):  # FIXME split and rename
         self._pixel_count = pixel_count
         self._scan_result: ScanResult = APIs().scan.get_scan_result()
 
@@ -82,9 +82,17 @@ if __name__ == "__main__":
     project_api.load(os.path.expanduser("~/ledboard-working-project.json"))
     configuration = board_api.get_configuration()
 
+    segment_to_universe_map = {
+        -1: None,
+        0: 0,
+        1: 0,
+        2: 1,
+        3: 1,
+        4: 2
+    }
     scan_api.map_to_tree_and_send_to_board(
         division_count=int(configuration.pixel_per_universe / 2),  # two half-totem per universe
-        universe_number=1
+        segment_to_universe_map=segment_to_universe_map
     )
 
     configuration.universe_a = 0
