@@ -27,5 +27,6 @@ class BoardConfiguration:
     pixel_per_universe: int = Components().configuration.pixel_per_universe
     pixel_type: PixelType = PixelType.GRBW
 
+    erase_mapping_tree_file: bool = False
     do_save_and_reboot: bool = False
     do_reboot_bootloader: bool = False

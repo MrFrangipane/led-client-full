@@ -55,6 +55,11 @@ class MappingTreeStructureStruct:
             universe_c_pixels_led_count=univ_c
         )
 
+        # print(_ppu)
+        # print(len(univ_a), univ_a)
+        # print(len(univ_b), univ_b)
+        # print(len(univ_c), univ_c)
+
         return new
 
     def to_entity(self) -> MappingTreeStructure:

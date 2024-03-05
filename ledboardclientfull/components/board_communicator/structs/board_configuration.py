@@ -31,6 +31,7 @@ class BoardConfigurationStruct:
     pixel_type: IntegerType() = 0
 
     # 4 bytes ints instead of bool to avoid manual bytes padding
+    erase_mapping_tree_file: IntegerType() = 0
     do_save_and_reboot: IntegerType() = 0
     do_reboot_bootloader: IntegerType() = 0
 
@@ -56,6 +57,7 @@ class BoardConfigurationStruct:
         new.pixel_per_universe = source.pixel_per_universe
         new.pixel_type = source.pixel_type.value
 
+        new.erase_mapping_tree_file = int(source.erase_mapping_tree_file)
         new.do_save_and_reboot = int(source.do_save_and_reboot)
         new.do_reboot_bootloader = int(source.do_reboot_bootloader)
 
@@ -82,6 +84,7 @@ class BoardConfigurationStruct:
         new.pixel_per_universe = self.pixel_per_universe
         new.pixel_type = PixelType(self.pixel_type)
 
+        new.erase_mapping_tree_file = bool(self.erase_mapping_tree_file)
         new.do_save_and_reboot = bool(self.do_save_and_reboot)
         new.do_reboot_bootloader = bool(self.do_reboot_bootloader)
 

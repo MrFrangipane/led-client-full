@@ -24,6 +24,8 @@ class ScanToTreeMapper:
         tree = MappingTree()
         for segment, detected_points in self._segments.items():
             universe = segment_to_universe_map[segment]
+            if universe is None:
+                raise ValueError(f"Following points are not assigned a segment: {detected_points}")
             tree += SegmentMapper().make_tree(universe, detected_points, pixel_per_segment, pixel_starts[universe])
             pixel_starts[universe] += pixel_per_segment
 
