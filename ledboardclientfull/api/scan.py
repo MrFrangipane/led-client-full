@@ -70,7 +70,7 @@ def is_scanning() -> bool:
     return Components().scanner.is_scanning()
 
 
-def get_detection_coordinates() -> Tuple[int, int]:
+def get_detection_coordinates() -> Tuple[int, int, int]:  # FIXME make a DataClass
     return Components().image_processor.detection_coordinates
 
 
@@ -86,5 +86,5 @@ def do_detection():
     Components().image_processor.viewport_pixmap()  # FIXME hacky
 
 
-def map_to_tree_and_send_to_board(division_count: int):
-    Components().scan_to_tree_mapper.map_to_tree_and_send_to_board(division_count)
+def map_to_tree_and_send_to_board(division_count: int, universe_number: int):
+    Components().scan_to_tree_mapper.map_to_tree_and_send_to_board(division_count, universe_number)

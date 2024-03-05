@@ -14,6 +14,6 @@ class UniverseStructure:
 
 @dataclass
 class MappingTreeStructure:
-    universe_a: UniverseStructure = UniverseStructure()
-    universe_b: UniverseStructure = UniverseStructure()
-    universe_c: UniverseStructure = UniverseStructure()
+    universe_a: UniverseStructure = field(default_factory=UniverseStructure)
+    universe_b: UniverseStructure = field(default_factory=UniverseStructure)
+    universe_c: UniverseStructure = field(default_factory=UniverseStructure)

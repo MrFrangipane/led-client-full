@@ -14,7 +14,7 @@ class ScanToTreeMapper:
         self._pixels: dict[int, list[int]] = dict()
         self._pixel_count: int = 0
 
-    def map_to_tree_and_send_to_board(self, pixel_count):  # FIXME split and rename
+    def map_to_tree_and_send_to_board(self, pixel_count, universe_number):  # FIXME split and rename
         self._pixel_count = pixel_count
         self._scan_result: ScanResult = APIs().scan.get_scan_result()
 
@@ -27,7 +27,7 @@ class ScanToTreeMapper:
         for pixel_number, leds in sorted(self._pixels.items()):
             for mapping_id, led_id in enumerate(leds):
                 APIs().board.send_mapping_tree_leaf(
-                    MappingTreeLeaf(led_id, mapping_id, pixel_number, universe_number=0)
+                    MappingTreeLeaf(led_id, mapping_id, pixel_number, universe_number)
                 )
 
     def _find_min_max(self):
@@ -79,11 +79,12 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     init_ledboard_client()
-    project_api.load(os.path.expanduser("~/ledboard-scan-ok.json"))
+    project_api.load(os.path.expanduser("~/ledboard-working-project.json"))
     configuration = board_api.get_configuration()
 
     scan_api.map_to_tree_and_send_to_board(
-        division_count=int(configuration.pixel_per_universe / 2)  # two half-totem per universe
+        division_count=int(configuration.pixel_per_universe / 2),  # two half-totem per universe
+        universe_number=1
     )
 
     configuration.universe_a = 0

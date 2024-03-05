@@ -1,3 +1,4 @@
+import logging
 import time
 from copy import copy
 
@@ -9,6 +10,8 @@ from ledboardclientfull.core.entities.board.illumination_type import BoardIllumi
 from ledboardclientfull.core.entities.scan.detection_point import DetectionPoint
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
 from ledboardclientfull.core.entities.scan.settings import ScanSettings
+
+_logger = logging.getLogger(__name__)
 
 
 class Scanner:
@@ -36,20 +39,26 @@ class Scanner:
     def step_scan(self):
         if self._current_led > self._settings.led_last:
             self.stop_scan()
+            return
 
         illumination = copy(self._backup_illumination)
         illumination.type = BoardIlluminationType.Single
         illumination.led_single = self._current_led
         APIs().illumination.illuminate(illumination)
 
-        time.sleep(0.1)  # FIXME hacky
+        time.sleep(0.2)  # FIXME: make this a ScanSetting
         APIs().scan.do_detection()
 
-        x, y = APIs().scan.get_detection_coordinates()
-        self.scan_result.detected_points[self._current_led] = DetectionPoint(
-            led_number=self._current_led,
-            x=x, y=y
-        )
+        x, y, value = APIs().scan.get_detection_coordinates()
+        if value > 225:  # FIXME : make this a setting
+            new = DetectionPoint(
+                led_number=self._current_led,
+                x=x, y=y
+            )
+            self.scan_result.detected_points[self._current_led] = new
+            _logger.info(f"Detected LED {self._current_led}: {new} (v={value})")
+        else:
+            _logger.info(f"Skipped LED {self._current_led} (v={value})")
 
         self._current_led += 1
 

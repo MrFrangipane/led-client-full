@@ -1,6 +1,8 @@
+from typing import Tuple
+
 import cv2
 import numpy as np
-from numpy.typing import ArrayLike
+
 from PySide6.QtGui import QPixmap, QImage
 
 from ledboardclientfull.components.image_processor.video_capture import VideoCapture
@@ -12,7 +14,7 @@ class ScanImageProcessor:
     def __init__(self):
         self.mask = ScanMask()
         self.settings = ScanSettings()
-        self.detection_coordinates = [0, 0]  # FIXME use DetectionPoint
+        self.detection_coordinates: Tuple[int, int, int] = (0, 0, 0)  # FIXME create dataclass
 
         self._device_index = -1
         self._device_names: list[str] = list()
@@ -85,9 +87,9 @@ class ScanImageProcessor:
 
         if self.settings.viewport_brightest_pixel:
             gray = cv2.cvtColor(self._np_frame, cv2.COLOR_RGB2GRAY)  # is it BGR ?
-            _, maximum_value, _, maximum_location = cv2.minMaxLoc(gray)
-            self.detection_coordinates = maximum_location
-            cv2.circle(self._np_frame, maximum_location, 5, (255, 0, 0), -1)
+            _, maximum_v, _, (maximum_x, maximum_y) = cv2.minMaxLoc(gray)
+            self.detection_coordinates = maximum_x, maximum_y, maximum_v
+            cv2.circle(self._np_frame, (maximum_x, maximum_y), 5, (255, 0, 0), -1)
 
         height, width, channel = self._np_frame.shape
         bytes_per_line = 3 * width
