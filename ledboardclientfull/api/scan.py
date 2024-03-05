@@ -89,3 +89,7 @@ def do_detection():
 
 def map_to_tree(scan_result: ScanResult, pixel_per_segment: int, segment_to_universe_map: dict[int, int]) -> MappingTree:
     return Components().scan_to_tree_mapper.map_to_tree(scan_result, pixel_per_segment, segment_to_universe_map)
+
+
+def send_to_board(mapping_tree: MappingTree) -> None:
+    Components().scan_to_tree_mapper.send_to_board(mapping_tree)

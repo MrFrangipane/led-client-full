@@ -7,7 +7,7 @@ from ledboardclientfull.python_extensions.summable_dict import SummableDict
 @dataclass
 class LeavesUniverse:
     index: int = -1
-    leaves: SummableDict[int, MappingTreeLeaf] = field(default_factory=SummableDict)
+    leaves: SummableDict[int, list[MappingTreeLeaf]] = field(default_factory=SummableDict)
 
     def __add__(self, other):
         return LeavesUniverse(
@@ -18,6 +18,14 @@ class LeavesUniverse:
 @dataclass
 class Leaves:
     universes: SummableDict[int, LeavesUniverse] = field(default_factory=SummableDict)
+
+    def all(self):
+        all_leaves = list()
+        for universe in self.universes.values():
+            for leaves in universe.leaves.values():
+                all_leaves += leaves
+                print(leaves)
+        return all_leaves
 
     def __add__(self, other):
         return Leaves(

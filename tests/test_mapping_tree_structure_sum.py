@@ -4,7 +4,7 @@ from ledboardclientfull.core.entities.mapping_tree.structures import MappingTree
 
 
 # FIXME : why not simply testing SummableDict ?
-class TestMappingTreeSum(TestCase):
+class TestMappingTreeStructureSum(TestCase):
 
     def setUp(self):
         #

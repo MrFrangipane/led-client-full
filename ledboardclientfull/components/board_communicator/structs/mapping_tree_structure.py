@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from pythonarduinoserial.types import *
 
-from ledboardclientfull.core.entities.mapping_tree.structures import MappingTreeStructure, UniverseStructure, PixelStructure
+from ledboardclientfull.core.entities.mapping_tree.structures import MappingTreeStructure, PixelStructure
 from ledboardclientfull.core.components import Components
 
 _logger = logging.getLogger(__name__)
@@ -24,23 +24,24 @@ class MappingTreeStructureStruct:
         univ_b = [0] * 128
         univ_c = [0] * 128
 
-        for pixel in source.universe_a.pixels:
-            if pixel.index > _ppu - 1:
-                _logger.warning(f"MappingTreeStructureStruct overflow for Universe A, pixel {pixel.index}")
-                break
-            univ_a[pixel.index] = pixel.led_count
-
-        for pixel in source.universe_b.pixels:
-            if pixel.index > _ppu - 1:
-                _logger.warning(f"MappingTreeStructureStruct overflow for Universe B, pixel {pixel.index}")
-                break
-            univ_b[pixel.index] = pixel.led_count
-
-        for pixel in source.universe_c.pixels:
-            if pixel.index > _ppu - 1:
-                _logger.warning(f"MappingTreeStructureStruct overflow for Universe B, pixel {pixel.index}")
-                break
-            univ_c[pixel.index] = pixel.led_count
+        if 0 in source.universes:
+            for pixel in source.universes[0].pixels.values():
+                if pixel.index > _ppu - 1:
+                    _logger.warning(f"MappingTreeStructureStruct overflow for Universe A, pixel {pixel.index}")
+                    break
+                univ_a[pixel.index] = pixel.led_count
+        if 1 in source.universes:
+            for pixel in source.universes[1].pixels.values():
+                if pixel.index > _ppu - 1:
+                    _logger.warning(f"MappingTreeStructureStruct overflow for Universe B, pixel {pixel.index}")
+                    break
+                univ_b[pixel.index] = pixel.led_count
+        if 2 in source.universes:
+            for pixel in source.universes[2].pixels.values():
+                if pixel.index > _ppu - 1:
+                    _logger.warning(f"MappingTreeStructureStruct overflow for Universe B, pixel {pixel.index}")
+                    break
+                univ_c[pixel.index] = pixel.led_count
 
         new = MappingTreeStructureStruct(
             universe_a_pixels_led_count=univ_a,
@@ -48,18 +49,16 @@ class MappingTreeStructureStruct:
             universe_c_pixels_led_count=univ_c
         )
 
-        return new
-
     def to_entity(self) -> MappingTreeStructure:
         new = MappingTreeStructure()
 
         for pixel_index, led_count in enumerate(self.universe_a_pixels_led_count):
-            new.universe_a.pixels.append(PixelStructure(pixel_index, led_count))
+            new.universes[0].pixels.append(PixelStructure(pixel_index, led_count))
 
         for pixel_index, led_count in enumerate(self.universe_b_pixels_led_count):
-            new.universe_b.pixels.append(PixelStructure(pixel_index, led_count))
+            new.universes[1].pixels.append(PixelStructure(pixel_index, led_count))
 
         for pixel_index, led_count in enumerate(self.universe_c_pixels_led_count):
-            new.universe_c.pixels.append(PixelStructure(pixel_index, led_count))
+            new.universes[2].pixels.append(PixelStructure(pixel_index, led_count))
 
         return new

@@ -1,3 +1,4 @@
+from ledboardclientfull.core.apis import APIs
 from ledboardclientfull.core.entities.mapping_tree.mapping_tree import MappingTree
 from ledboardclientfull.core.entities.scan.detection_point import DetectionPoint
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
@@ -31,6 +32,13 @@ class ScanToTreeMapper:
             pixel_starts[universe] += pixel_per_segment
 
         return tree
+
+    @staticmethod
+    def send_to_board(mapping_tree: MappingTree):
+        APIs().board.set_mapping_tree_structure(mapping_tree.structure)
+        # all_leaves = mapping_tree.leaves.all()
+        # for leaf in all_leaves:
+        #     APIs().board.send_mapping_tree_leaf(leaf)
 
     def _make_segments(self):
         self._segments = dict()
@@ -66,12 +74,15 @@ if __name__ == "__main__":
         pixel_per_segment=int(configuration.pixel_per_universe / 2),  # two half-totem per universe
         segment_to_universe_map=segment_to_universe_mapping
     )
-    from pprint import pprint
-    pprint(project_tree)
 
-    # configuration.universe_a = 0
-    # configuration.universe_b = 1
-    # configuration.universe_c = 2
-    # configuration.execution_mode = BoardExecutionMode.ArtNet
-    # configuration.do_save_and_reboot = True
-    # board_api.set_configuration(configuration)
+    # from pprint import pprint
+    # pprint(project_tree)
+
+    scan_api.send_to_board(project_tree)
+
+    configuration.universe_a = 0
+    configuration.universe_b = -1
+    configuration.universe_c = -1
+    configuration.execution_mode = BoardExecutionMode.ArtNet
+    configuration.do_save_and_reboot = True
+    board_api.set_configuration(configuration)

@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy
 
 
 class SummableDict(dict):
@@ -7,11 +7,11 @@ class SummableDict(dict):
     """
 
     def __add__(self, other):
-        me = copy(self)
+        me = deepcopy(self)
         for key, other_value in other.items():
             self_value = me.get(key, None)
             if self_value is None:
-                me[key] = copy(other_value)
+                me[key] = deepcopy(other_value)
             else:
                 me[key] += other_value
 
