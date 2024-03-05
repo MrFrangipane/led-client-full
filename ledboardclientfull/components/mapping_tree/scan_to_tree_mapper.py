@@ -19,12 +19,8 @@ class ScanToTreeMapper:
 
         self._make_segments()
 
-        # FIXME: dont imply 3 universes
-        pixel_starts: dict[int, int] = {
-            0: 0,
-            1: 0,
-            2: 0
-        }
+        universe_numbers = sorted({u: 0 for u in set(segment_to_universe_map.values()) if u is not None})
+        pixel_starts = {u: 0 for u in universe_numbers}
         tree = MappingTree()
         for segment, detected_points in self._segments.items():
             universe = segment_to_universe_map[segment]
@@ -36,9 +32,9 @@ class ScanToTreeMapper:
     @staticmethod
     def send_to_board(mapping_tree: MappingTree):
         APIs().board.set_mapping_tree_structure(mapping_tree.structure)
-        # all_leaves = mapping_tree.leaves.all()
-        # for leaf in all_leaves:
-        #     APIs().board.send_mapping_tree_leaf(leaf)
+        all_leaves = mapping_tree.leaves.all()
+        for leaf in all_leaves:
+            APIs().board.send_mapping_tree_leaf(leaf)
 
     def _make_segments(self):
         self._segments = dict()
@@ -52,6 +48,8 @@ class ScanToTreeMapper:
 if __name__ == "__main__":
     import logging
     import os.path
+    import json
+    from ipaddress import IPv4Address
 
     from ledboardclientfull import init_ledboard_client, BoardExecutionMode, board_api, project_api, scan_api
 
@@ -75,14 +73,18 @@ if __name__ == "__main__":
         segment_to_universe_map=segment_to_universe_mapping
     )
 
-    # from pprint import pprint
-    # pprint(project_tree)
+    with open('project_tree.json', 'w+') as project_tree_file:
+        json.dump(project_tree.to_dict(), project_tree_file, indent=2)
 
-    scan_api.send_to_board(project_tree)
-
-    configuration.universe_a = 0
-    configuration.universe_b = -1
-    configuration.universe_c = -1
-    configuration.execution_mode = BoardExecutionMode.ArtNet
-    configuration.do_save_and_reboot = True
-    board_api.set_configuration(configuration)
+    # configuration.universe_a = 0
+    # configuration.universe_b = 1
+    # configuration.universe_c = 2
+    # configuration.ip_address = IPv4Address('192.168.20.201')
+    # configuration.execution_mode = BoardExecutionMode.ArtNet
+    # configuration.do_save_and_reboot = False
+    # board_api.set_configuration(configuration)
+    #
+    # scan_api.send_to_board(project_tree)
+    #
+    # configuration.do_save_and_reboot = True
+    # board_api.set_configuration(configuration)

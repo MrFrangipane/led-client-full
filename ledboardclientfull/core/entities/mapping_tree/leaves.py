@@ -21,10 +21,11 @@ class Leaves:
 
     def all(self):
         all_leaves = list()
+
         for universe in self.universes.values():
             for leaves in universe.leaves.values():
                 all_leaves += leaves
-                print(leaves)
+
         return all_leaves
 
     def __add__(self, other):
