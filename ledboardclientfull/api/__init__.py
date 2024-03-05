@@ -4,7 +4,7 @@ from ledboardclientfull.components.board_communicator.communicator import BoardC
 from ledboardclientfull.components.board_lister import BoardLister
 from ledboardclientfull.components.project_persistence import ProjectPersistence
 from ledboardclientfull.components.scanner import Scanner
-from ledboardclientfull.components.scan_to_tree_mapper import ScanToTreeMapper
+from ledboardclientfull.components.mapping_tree.scan_to_tree_mapper import ScanToTreeMapper
 
 from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.apis import APIs

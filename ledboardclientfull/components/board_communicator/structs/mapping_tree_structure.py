@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from pythonarduinoserial.types import *
 
-from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure, UniverseStructure, PixelStructure
+from ledboardclientfull.core.entities.mapping_tree.structures import MappingTreeStructure, UniverseStructure, PixelStructure
 from ledboardclientfull.core.components import Components
 
 _logger = logging.getLogger(__name__)

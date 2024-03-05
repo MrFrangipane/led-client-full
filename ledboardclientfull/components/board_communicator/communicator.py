@@ -10,7 +10,7 @@ from ledboardclientfull.components.board_communicator.structs import (
 )
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
 from ledboardclientfull.core.entities.board.illumination import BoardIllumination
-from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure
+from ledboardclientfull.core.entities.mapping_tree.structures import MappingTreeStructure
 
 
 _logger = logging.getLogger(__name__)

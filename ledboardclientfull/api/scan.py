@@ -6,6 +6,7 @@ from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
 from ledboardclientfull.core.entities.scan.settings import ScanSettings
 from ledboardclientfull.core.entities.scan.mask import ScanMask
+from ledboardclientfull.core.entities.mapping_tree.mapping_tree import MappingTree
 
 # FIXME: separate detecting devices from getting names list
 
@@ -86,5 +87,5 @@ def do_detection():
     Components().image_processor.viewport_pixmap()  # FIXME hacky
 
 
-def map_to_tree_and_send_to_board(division_count: int, segment_to_universe_map: dict[int, int]):
-    Components().scan_to_tree_mapper.map_to_tree_and_send_to_board(division_count, segment_to_universe_map)
+def map_to_tree(scan_result: ScanResult, pixel_per_segment: int, segment_to_universe_map: dict[int, int]) -> MappingTree:
+    return Components().scan_to_tree_mapper.map_to_tree(scan_result, pixel_per_segment, segment_to_universe_map)

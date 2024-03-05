@@ -2,7 +2,7 @@ from ledboardclientfull.core.components import Components
 from ledboardclientfull.core.entities.board.configuration import BoardConfiguration
 from ledboardclientfull.core.entities.board.list import BoardsList
 from ledboardclientfull.core.entities.mapping_tree.leaf import MappingTreeLeaf
-from ledboardclientfull.core.entities.mapping_tree.structure import MappingTreeStructure
+from ledboardclientfull.core.entities.mapping_tree.structures import MappingTreeStructure
 
 
 #
