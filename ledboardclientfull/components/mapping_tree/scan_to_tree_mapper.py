@@ -69,22 +69,22 @@ if __name__ == "__main__":
     }
     project_tree = scan_api.map_to_tree(
         scan_result=scan_api.get_scan_result(),
-        pixel_per_segment=int(configuration.pixel_per_universe / 2),  # two half-totem per universe
+        pixel_per_segment=4, #int(configuration.pixel_per_universe / 2),  # two half-totem per universe
         segment_to_universe_map=segment_to_universe_mapping
     )
 
     with open('project_tree.json', 'w+') as project_tree_file:
         json.dump(project_tree.to_dict(), project_tree_file, indent=2)
 
-    # configuration.universe_a = 0
-    # configuration.universe_b = 1
-    # configuration.universe_c = 2
-    # configuration.ip_address = IPv4Address('192.168.20.201')
-    # configuration.execution_mode = BoardExecutionMode.ArtNet
-    # configuration.do_save_and_reboot = False
-    # board_api.set_configuration(configuration)
-    #
-    # scan_api.send_to_board(project_tree)
-    #
-    # configuration.do_save_and_reboot = True
-    # board_api.set_configuration(configuration)
+    configuration.universe_a = 0
+    configuration.universe_b = 1
+    configuration.universe_c = 2
+    configuration.ip_address = IPv4Address('192.168.20.201')
+    configuration.execution_mode = BoardExecutionMode.ArtNet
+    configuration.do_save_and_reboot = False
+    board_api.set_configuration(configuration)
+
+    scan_api.send_to_board(project_tree)
+
+    configuration.do_save_and_reboot = True
+    board_api.set_configuration(configuration)
