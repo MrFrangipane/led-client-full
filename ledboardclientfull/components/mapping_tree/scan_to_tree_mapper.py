@@ -70,13 +70,17 @@ if __name__ == "__main__":
     project_api.load(os.path.expanduser("~/ledboard-working-project.json"))
     configuration = board_api.get_configuration()
 
+    configuration.universe_a = 3
+    configuration.universe_b = 4
+    configuration.universe_c = 5
+
     segment_to_universe_mapping = {
         -1: None,
-        0: 0,
-        1: 0,
-        2: 1,
-        3: 1,
-        4: 2
+        0: configuration.universe_a,
+        1: configuration.universe_a,
+        2: configuration.universe_b,
+        3: configuration.universe_b,
+        4: configuration.universe_c
     }
 
     project_tree = scan_api.map_to_tree(
@@ -88,9 +92,6 @@ if __name__ == "__main__":
     with open('project_tree.json', 'w+') as project_tree_file:
         json.dump(project_tree.to_dict(), project_tree_file, indent=2)
 
-    configuration.universe_a = 0
-    configuration.universe_b = 1
-    configuration.universe_c = 2
     configuration.ip_address = IPv4Address('192.168.20.201')
     configuration.execution_mode = BoardExecutionMode.ArtNet
     configuration.pixel_type = PixelType.GRB
