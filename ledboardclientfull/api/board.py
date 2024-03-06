@@ -36,6 +36,10 @@ def set_configuration(configuration: BoardConfiguration):
     Components().board_communicator.configure(configuration)
 
 
+def close_serial_port():
+    Components().board_communicator.close_serial_port()
+
+
 #
 # Mapping Tree
 def set_mapping_tree_structure(structure: MappingTreeStructure):

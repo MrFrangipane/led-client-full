@@ -1,8 +1,13 @@
+import logging
+
 from ledboardclientfull.core.apis import APIs
 from ledboardclientfull.core.entities.mapping_tree.mapping_tree import MappingTree
 from ledboardclientfull.core.entities.scan.detection_point import DetectionPoint
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
 from ledboardclientfull.components.mapping_tree.segment_mapper import SegmentMapper
+
+
+_logger = logging.getLogger(__name__)
 
 
 class ScanToTreeMapper:
@@ -25,7 +30,8 @@ class ScanToTreeMapper:
         for segment, detected_points in self._segments.items():
             universe = segment_to_universe_map[segment]
             if universe is None:
-                raise ValueError(f"Following points are not assigned a segment: {detected_points}")
+                _logger.warning(f"{len(detected_points)} detected points are not assigned a segment")
+                continue
             tree += SegmentMapper().make_tree(universe, detected_points, pixel_per_segment, pixel_starts[universe])
             pixel_starts[universe] += pixel_per_segment
 
@@ -53,11 +59,14 @@ if __name__ == "__main__":
     import json
     from ipaddress import IPv4Address
 
-    from ledboardclientfull import init_ledboard_client, BoardExecutionMode, board_api, project_api, scan_api
+    from ledboardclientfull import init_ledboard_client, BoardExecutionMode, board_api, project_api, scan_api, PixelType
 
     logging.basicConfig(level=logging.INFO)
 
     init_ledboard_client()
+
+    board_api.available_boards()  # FIXME hack to prevent semaphore windows
+
     project_api.load(os.path.expanduser("~/ledboard-working-project.json"))
     configuration = board_api.get_configuration()
 
@@ -69,9 +78,10 @@ if __name__ == "__main__":
         3: 1,
         4: 2
     }
+
     project_tree = scan_api.map_to_tree(
         scan_result=scan_api.get_scan_result(),
-        pixel_per_segment=4, #int(configuration.pixel_per_universe / 2),  # two half-totem per universe
+        pixel_per_segment=int(configuration.pixel_per_universe / 2),  # two half-totem per universe
         segment_to_universe_map=segment_to_universe_mapping
     )
 
@@ -83,6 +93,7 @@ if __name__ == "__main__":
     configuration.universe_c = 2
     configuration.ip_address = IPv4Address('192.168.20.201')
     configuration.execution_mode = BoardExecutionMode.ArtNet
+    configuration.pixel_type = PixelType.GRB
     configuration.do_save_and_reboot = False
     board_api.set_configuration(configuration)
 

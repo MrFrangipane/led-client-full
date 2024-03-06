@@ -33,6 +33,9 @@ class BoardCommunicator:
     def set_serial_port_name(self, name):
         self.serial_communicator.set_port_name(name)
 
+    def close_serial_port(self):
+        self.serial_communicator.disconnect(for_real=True)  # FIXME OH MY GOD
+
     #
     # Configuration
     def configure(self, configuration: BoardConfiguration):

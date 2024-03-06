@@ -57,14 +57,15 @@ class SegmentMapper:
                 self._max_x = max(self._max_x, point.x)
 
     def _group_by_pixels(self) -> None:
-        size = self._max_x - self._min_x
-        step = int(size / self._pixel_count)
+        size = float(self._max_x - self._min_x)
+        step = size / float(self._pixel_count)
 
         self._pixels = dict()
 
         for point in self._detected_points:
-            pos = point.x - self._min_x
-            pixel_number = self._pixel_start + min(int(pos / step), self._pixel_count - 1)
+            pos = float(point.x - self._min_x)
+
+            pixel_number = self._pixel_start + int(pos / step)
 
             if pixel_number not in self._pixels:
                 self._pixels[pixel_number] = [point.led_number]

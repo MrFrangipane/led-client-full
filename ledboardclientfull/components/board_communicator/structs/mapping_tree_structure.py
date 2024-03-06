@@ -42,8 +42,8 @@ class MappingTreeStructureStruct:
                     break
                 univ_b[pixel.index] = pixel.led_count
 
-        if configuration.universe_b in source.universes:
-            for pixel in source.universes[configuration.universe_b].pixels.values():
+        if configuration.universe_c in source.universes:
+            for pixel in source.universes[configuration.universe_c].pixels.values():
                 if pixel.index > _ppu - 1:
                     _logger.warning(f"MappingTreeStructureStruct overflow for Universe B, pixel {pixel.index}")
                     break

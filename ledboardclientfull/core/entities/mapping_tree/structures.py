@@ -15,9 +15,10 @@ class PixelStructure:
                 f'Cannot add two {self.__class__.__name__} with different index '
                 f'(self.index={self.index}, other.index={other.index})'
             )
-        me = copy(self)
-        me.led_count += other.led_count
-        return me
+        return PixelStructure(
+            index=self.index,
+            led_count=self.led_count + other.led_count
+        )
 
 
 @dataclass
