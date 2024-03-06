@@ -65,12 +65,13 @@ class SegmentMapper:
         for point in self._detected_points:
             pos = float(point.x - self._min_x)
 
-            pixel_number = self._pixel_start + int(pos / step)
+            pixel_number = min(int(pos / step), self._pixel_count - 1)
+            pixel_number_absolute = self._pixel_start + pixel_number
 
-            if pixel_number not in self._pixels:
-                self._pixels[pixel_number] = [point.led_number]
+            if pixel_number_absolute not in self._pixels:
+                self._pixels[pixel_number_absolute] = [point.led_number]
             else:
-                self._pixels[pixel_number].append(point.led_number)
+                self._pixels[pixel_number_absolute].append(point.led_number)
 
     def _make_structure(self) -> MappingTreeStructure:
         tree_structure = MappingTreeStructure()
