@@ -1,6 +1,6 @@
 # LED Board Client (full)
 
-**/!\ THIS IS ALPHA SOFTWARE /!\** 
+**/!\ THIS IS ALPHA SOFTWARE**
 
 Full version of the client for LED Boards
 
