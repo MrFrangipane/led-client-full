@@ -7,6 +7,8 @@ from ledboardclientfull.core.entities.board.illumination_type import BoardIllumi
 from ledboardclientfull.core.entities.board.list import BoardsList
 from ledboardclientfull.core.entities.board.pixel_type import PixelType
 
+from ledboardclientfull.core.entities.mapping_tree.mapping_tree import MappingTree
+
 from ledboardclientfull.core.entities.scan.detection_point import DetectionPoint
 from ledboardclientfull.core.entities.scan.mask import ScanMask
 from ledboardclientfull.core.entities.scan.scan_result import ScanResult
