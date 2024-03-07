@@ -1,4 +1,3 @@
-from copy import copy
 from dataclasses import dataclass, field
 
 from ledboardclientfull.python_extensions.summable_dict import SummableDict

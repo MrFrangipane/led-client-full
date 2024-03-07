@@ -11,6 +11,7 @@ class LeavesUniverse:
 
     def __add__(self, other):
         return LeavesUniverse(
+            index=self.index,
             leaves=self.leaves + other.leaves
         )
 
