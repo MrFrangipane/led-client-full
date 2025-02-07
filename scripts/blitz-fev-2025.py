@@ -34,7 +34,6 @@ class SamplePointStruct:
     index: IntegerType() = 0
     x: FloatType() = 0.0
     y: FloatType() = 0.0
-    z: FloatType() = 0.0
     universe_number: IntegerType() = 0
     universe_channel: IntegerType() = 0
     color_format: IntegerType() = 0
@@ -118,18 +117,18 @@ if __name__ == "__main__":
 
             serial_communicator.send(hardware_configuration_struct)
 
-            count = 14
+            count = 450 # RP2040 can only handle that much ? (not tested with multiple leds per point)
             serial_communicator.send(BeginSamplePointsReceptionCommand(count))
             for l in range(count):
                 serial_communicator.send(SamplePointStruct(
                     index=l,
                     x=float(l),
                     y=0.0,
-                    z=0.0,
                     universe_number=0,
                     universe_channel=0,
                     color_format=1
                 ))
+                print(l + 1)
 
             serial_communicator.send(EndSamplePointsReceptionCommand())
             serial_communicator.send(SaveSamplingPointsCommand())
