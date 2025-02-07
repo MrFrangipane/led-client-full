@@ -1,3 +1,4 @@
+import time
 import sys
 
 from dataclasses import dataclass
@@ -53,7 +54,7 @@ class HardwareConfigurationStruct:
     hardware_revision: IntegerType() = 0
     pin_admin_mode: IntegerType() = 1
     pin_dmx_input: IntegerType() = 11
-    pin_led_first: IntegerType() = 12
+    pin_led_first: IntegerType() = 6  # GPIO number
     slider_logarithmic_scale: FloatType() = 1.5
 
     firmware_revision: IntegerType() = 0
@@ -80,6 +81,10 @@ if __name__ == "__main__":
         LedInfoStruct
     ]
 
+    ports = [port.name for port in list_serial_ports()]
+    ports = ['COM4'] if 'COM4' in ports else ports
+    print(ports)
+
     if "makecheader" in sys.argv:
         import argparse
         import logging
@@ -101,7 +106,7 @@ if __name__ == "__main__":
             c_header_file.write(c_header_exporter.export())
 
     elif "setname" in sys.argv:
-        ports = [port.name for port in list_serial_ports()]
+
         if len(ports) == 1:
             serial_communicator = SerialCommunicator(structs=all_structs)
             serial_communicator.set_port_name(ports[0])
@@ -109,15 +114,16 @@ if __name__ == "__main__":
 
             hardware_configuration_struct = serial_communicator.receive(HardwareConfigurationStruct)
             hardware_configuration_struct.name = "Valenti"
+            hardware_configuration_struct.pin_led_first = 6
 
             serial_communicator.send(hardware_configuration_struct)
 
-            count = 4
+            count = 14
             serial_communicator.send(BeginSamplePointsReceptionCommand(count))
             for l in range(count):
                 serial_communicator.send(SamplePointStruct(
                     index=l,
-                    x=l * 0.1,
+                    x=float(l),
                     y=0.0,
                     z=0.0,
                     universe_number=0,
@@ -125,12 +131,13 @@ if __name__ == "__main__":
                     color_format=1
                 ))
 
-            # serial_communicator.send(SaveSamplingPointsCommand())
+            serial_communicator.send(EndSamplePointsReceptionCommand())
+            serial_communicator.send(SaveSamplingPointsCommand())
+            time.sleep(0.01)
 
             serial_communicator.disconnect()
 
     else:
-        ports = [port.name for port in list_serial_ports()]
         if len(ports) == 1:
             serial_communicator = SerialCommunicator(structs=all_structs)
             serial_communicator.set_port_name(ports[0])
