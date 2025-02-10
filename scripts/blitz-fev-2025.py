@@ -79,12 +79,18 @@ def read_scan_data():
     universes = sorted(tree["structure"]["universes"].keys())
 
     data = dict()
+    sampling_point_index = 0
     for universe in universes:
         sampling_points: dict[int, SamplePointStruct] = dict()
         led_infos: list[LedInfoStruct] = list()
+        pixels_done = list()
+
         for leaves in tree["leaves"]['universes'][universe]["leaves"].values():
             for leaf in leaves:
-                sampling_point_index = leaf["pixel_number"]
+                if leaf["pixel_number"] not in pixels_done:
+                    pixels_done.append(leaf["pixel_number"])
+                    sampling_point_index += 1
+
                 scan_point = scan["scan_result"]["detected_points"][str(leaf["led_id"])]
                 sampling_points[sampling_point_index] = SamplePointStruct(
                     index=sampling_point_index,
@@ -155,8 +161,6 @@ if __name__ == "__main__":
             print("No serial port found")
             return
 
-        data_universe_0 = read_scan_data()['0']
-
         serial_communicator = SerialCommunicator(structs=all_structs)
         serial_communicator.set_port_name(ports[0])
         serial_communicator.connect()
@@ -168,20 +172,23 @@ if __name__ == "__main__":
 
         serial_communicator.send(hardware_configuration_struct)
 
-        count = 450 # RP2040 can only handle that much ? (not tested with multiple leds per point)
+        scan_data = read_scan_data()
+        count = sum([len(universe['sampling_points']) for universe in scan_data.values()])
+        print(f"total SamplingPoint: {count}")
+
         serial_communicator.send(BeginSamplePointsReceptionCommand(count))
+        for data_universe in scan_data.values():
+            for sampling_point in data_universe["sampling_points"].values():
+                serial_communicator.send(sampling_point)
+                for led_info in data_universe["led_infos"]:
+                    if led_info.sampling_point_index == sampling_point.index:
+                        serial_communicator.send(led_info)
 
-        for sampling_point in data_universe_0["sampling_points"].values():
-            serial_communicator.send(sampling_point)
-            for led_info in data_universe_0["led_infos"]:
-                if led_info.sampling_point_index == sampling_point.index:
-                    serial_communicator.send(led_info)
-
-            time.sleep(0.01)
+                time.sleep(0.02)
 
         serial_communicator.send(EndSamplePointsReceptionCommand())
         serial_communicator.send(SaveSamplingPointsCommand())
-        time.sleep(0.01)
+        time.sleep(0.02)
 
         serial_communicator.disconnect()
 
@@ -208,6 +215,3 @@ if __name__ == "__main__":
         get_info()
         data = read_scan_data()
         pprint.pprint(data)
-
-        led_indexes = sorted([led.led_index for led in data['0']['led_infos']])
-        pprint.pprint(led_indexes)
