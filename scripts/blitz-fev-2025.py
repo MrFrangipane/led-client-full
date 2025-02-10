@@ -1,11 +1,7 @@
-import sys
-
+import json
 from dataclasses import dataclass
 
-from serial.tools.list_ports import comports as list_serial_ports
-
 from pythonarduinoserial.types import *
-from pythonarduinoserial.communicator import SerialCommunicator
 
 
 @dataclass
@@ -68,7 +64,58 @@ class HardwareConfigurationStruct:
     osc_receive_port: IntegerType() = 54321
 
 
+def read_scan_data():
+    import json
+
+    tree_filepath = "E:/PROJECTS_2025/ledboard-projects/backups/pylones-OK-2024-03-06.json"
+    scan_filepath = "E:/PROJECTS_2025/ledboard-projects/scan-a-b-c-d-2024-03-06-v1.json"
+
+    with open(tree_filepath, "r") as tree_file:
+        tree = json.load(tree_file)
+
+    with open(scan_filepath, "r") as scan_file:
+        scan = json.load(scan_file)
+
+    universes = sorted(tree["structure"]["universes"].keys())
+
+    data = dict()
+    for universe in universes:
+        sampling_points: dict[int, SamplePointStruct] = dict()
+        led_infos: list[LedInfoStruct] = list()
+        for leaves in tree["leaves"]['universes'][universe]["leaves"].values():
+            for leaf in leaves:
+                sampling_point_index = leaf["pixel_number"]
+                scan_point = scan["scan_result"]["detected_points"][str(leaf["led_id"])]
+                sampling_points[sampling_point_index] = SamplePointStruct(
+                    index=sampling_point_index,
+                    x=float(scan_point["x"]) / 10.0,
+                    y=float(scan_point["y"]) / 10.0,
+                    universe_number=int(universe),
+                    universe_channel=sampling_point_index * 3,
+                    color_format=1
+                )
+
+                led_infos.append(
+                    LedInfoStruct(
+                        sampling_point_index=sampling_point_index,
+                        led_index=leaf["led_id"]
+                    )
+                )
+        data[universe] = {
+            "sampling_points": sampling_points,
+            "led_infos": led_infos
+        }
+
+    return data
+
+
 if __name__ == "__main__":
+    import sys
+    import time
+
+    from serial.tools.list_ports import comports as list_serial_ports
+    from pythonarduinoserial.communicator import SerialCommunicator
+
     all_structs = [
         HardwareConfigurationStruct,
         BeginSamplePointsReceptionCommand,
@@ -83,7 +130,7 @@ if __name__ == "__main__":
     ports = ['COM4'] if 'COM4' in ports else ports
     print(ports)
 
-    if "makecheader" in sys.argv:
+    def make_header():
         import argparse
         import logging
         import sys
@@ -103,40 +150,42 @@ if __name__ == "__main__":
         with open(args.export_header, "w+") as c_header_file:
             c_header_file.write(c_header_exporter.export())
 
-    elif "setname" in sys.argv:
+    def upload_blitz():
+        if len(ports) != 1:
+            print("No serial port found")
+            return
 
-        if len(ports) == 1:
-            serial_communicator = SerialCommunicator(structs=all_structs)
-            serial_communicator.set_port_name(ports[0])
-            serial_communicator.connect()
+        data_universe_0 = read_scan_data()['0']
 
-            hardware_configuration_struct = serial_communicator.receive(HardwareConfigurationStruct)
-            hardware_configuration_struct.name = "Blitz"
-            hardware_configuration_struct.pin_led_first = 6
-            hardware_configuration_struct.led_count = 300
+        serial_communicator = SerialCommunicator(structs=all_structs)
+        serial_communicator.set_port_name(ports[0])
+        serial_communicator.connect()
 
-            serial_communicator.send(hardware_configuration_struct)
+        hardware_configuration_struct = serial_communicator.receive(HardwareConfigurationStruct)
+        hardware_configuration_struct.name = "Blitz"
+        hardware_configuration_struct.pin_led_first = 6
+        hardware_configuration_struct.led_count = 250
 
-            # count = 450 # RP2040 can only handle that much ? (not tested with multiple leds per point)
-            # serial_communicator.send(BeginSamplePointsReceptionCommand(count))
-            # for l in range(count):
-            #     serial_communicator.send(SamplePointStruct(
-            #         index=l,
-            #         x=float(l),
-            #         y=0.0,
-            #         universe_number=0,
-            #         universe_channel=0,
-            #         color_format=1
-            #     ))
-            #     print(l + 1)
-            #
-            # serial_communicator.send(EndSamplePointsReceptionCommand())
-            # serial_communicator.send(SaveSamplingPointsCommand())
-            # time.sleep(0.01)
+        serial_communicator.send(hardware_configuration_struct)
 
-            serial_communicator.disconnect()
+        count = 450 # RP2040 can only handle that much ? (not tested with multiple leds per point)
+        serial_communicator.send(BeginSamplePointsReceptionCommand(count))
 
-    else:
+        for sampling_point in data_universe_0["sampling_points"].values():
+            serial_communicator.send(sampling_point)
+            for led_info in data_universe_0["led_infos"]:
+                if led_info.sampling_point_index == sampling_point.index:
+                    serial_communicator.send(led_info)
+
+            time.sleep(0.01)
+
+        serial_communicator.send(EndSamplePointsReceptionCommand())
+        serial_communicator.send(SaveSamplingPointsCommand())
+        time.sleep(0.01)
+
+        serial_communicator.disconnect()
+
+    def  get_info():
         if len(ports) == 1:
             serial_communicator = SerialCommunicator(structs=all_structs)
             serial_communicator.set_port_name(ports[0])
@@ -146,3 +195,19 @@ if __name__ == "__main__":
             serial_communicator.disconnect()
 
             print(hardware_configuration_struct)
+
+
+    if "makecheader" in sys.argv:
+        make_header()
+
+    elif "upload-blitz" in sys.argv:
+        upload_blitz()
+
+    else:
+        import pprint
+        get_info()
+        data = read_scan_data()
+        pprint.pprint(data)
+
+        led_indexes = sorted([led.led_index for led in data['0']['led_infos']])
+        pprint.pprint(led_indexes)
