@@ -93,8 +93,8 @@ def read_scan_data():
 
                 scan_point = scan["scan_result"]["detected_points"][str(leaf["led_id"])]
                 sampling_points[sampling_point_index] = SamplePointStruct(
-                    index=sampling_point_index,
-                    x=float(scan_point["x"]) / 10.0,
+                    index=sampling_point_index - 1,
+                    x=0.0, #float(scan_point["x"]) / 10.0,
                     y=float(scan_point["y"]) / 10.0,
                     universe_number=int(universe),
                     universe_channel=sampling_point_index * 3,
@@ -184,11 +184,12 @@ if __name__ == "__main__":
                     if led_info.sampling_point_index == sampling_point.index:
                         serial_communicator.send(led_info)
 
-                time.sleep(0.02)
+                print(sampling_point.index)
 
-        serial_communicator.send(EndSamplePointsReceptionCommand())
+        time.sleep(0.6)
         serial_communicator.send(SaveSamplingPointsCommand())
-        time.sleep(0.02)
+        time.sleep(0.6)
+        serial_communicator.send(EndSamplePointsReceptionCommand())
 
         serial_communicator.disconnect()
 
