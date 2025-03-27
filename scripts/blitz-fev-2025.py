@@ -64,7 +64,39 @@ class HardwareConfigurationStruct:
     osc_receive_port: IntegerType() = 54321
 
 
+def make_simple_led_strip_data(count):
+    data = dict()
+    sampling_points: dict[int, SamplePointStruct] = dict()
+    led_infos: list[LedInfoStruct] = list()
+    pixels_done = list()
+
+    for sampling_point_index in range(1, count):
+        sampling_points[sampling_point_index] = SamplePointStruct(
+            index=sampling_point_index - 1,
+            x=0.0,  # float(scan_point["x"]) / 10.0,
+            y=float(sampling_point_index) / 10.0,
+            universe_number=1,
+            universe_channel=sampling_point_index * 3,
+            color_format=1
+        )
+
+        led_infos.append(
+            LedInfoStruct(
+                sampling_point_index=sampling_point_index,
+                led_index=sampling_point_index
+            )
+        )
+
+    data[1] = {
+        "sampling_points": sampling_points,
+        "led_infos": led_infos
+    }
+
+    return data
+
+
 def read_scan_data():
+
     import json
 
     tree_filepath = "E:/PROJECTS_2025/ledboard-projects/backups/pylones-OK-2024-03-06.json"
@@ -172,7 +204,8 @@ if __name__ == "__main__":
 
         serial_communicator.send(hardware_configuration_struct)
 
-        scan_data = read_scan_data()
+        # scan_data = read_scan_data()
+        scan_data = make_simple_led_strip_data(50)
         count = sum([len(universe['sampling_points']) for universe in scan_data.values()])
         print(f"total SamplingPoint: {count}")
 
