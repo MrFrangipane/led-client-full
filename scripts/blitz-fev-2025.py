@@ -70,11 +70,11 @@ def make_simple_led_strip_data(count):
     led_infos: list[LedInfoStruct] = list()
     pixels_done = list()
 
-    for sampling_point_index in range(1, count):
-        sampling_points[sampling_point_index] = SamplePointStruct(
-            index=sampling_point_index - 1,
+    for sampling_point_index in range(count):
+        sampling_points[sampling_point_index + 1] = SamplePointStruct(
+            index=sampling_point_index,
             x=0.0,  # float(scan_point["x"]) / 10.0,
-            y=float(sampling_point_index) / 10.0,
+            y=float(sampling_point_index),
             universe_number=1,
             universe_channel=sampling_point_index * 3,
             color_format=1
@@ -151,6 +151,8 @@ if __name__ == "__main__":
     import sys
     import time
 
+    PORT = 'COM7'
+
     from serial.tools.list_ports import comports as list_serial_ports
     from pythonarduinoserial.communicator import SerialCommunicator
 
@@ -165,7 +167,7 @@ if __name__ == "__main__":
     ]
 
     ports = [port.name for port in list_serial_ports()]
-    ports = ['COM4'] if 'COM4' in ports else ports
+    ports = [PORT] if PORT in ports else ports
     print(ports)
 
     def make_header():
