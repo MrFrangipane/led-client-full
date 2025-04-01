@@ -22,6 +22,9 @@ class UiControlParameters:
             scale_y=self.scale_y.get(),
             min=self.min.get(),
             max=self.max.get(),
+            r=self.r.get(),
+            g=self.g.get(),
+            b=self.b.get(),
         ))
 
     def get_from_board(self):
@@ -37,6 +40,9 @@ class UiControlParameters:
         self.scale_y.set(parameters.scale_y)
         self.min.set(parameters.min)
         self.max.set(parameters.max)
+        self.r.set(parameters.r)
+        self.g.set(parameters.g)
+        self.b.set(parameters.b)
 
     def save(self):
         self.board.save_control_parameters()
@@ -136,6 +142,39 @@ class UiControlParameters:
             command=self.send_to_board,
         )
         self.max.pack(pady=5)
+
+        #
+        # RGB
+        frame_rgb = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+        frame_rgb.pack(fill=BOTH, expand=True, padx=5, pady=5)
+        Label(frame_rgb, text="RGB").pack(pady=5)
+        self.r = Scale(
+            frame_rgb,
+            from_=0,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.r.pack(pady=5)
+        self.g = Scale(
+            frame_rgb,
+            from_=0,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.g.pack(pady=5)
+        self.b = Scale(
+            frame_rgb,
+            from_=0,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.b.pack(pady=5)
 
         #
         # Buttons
