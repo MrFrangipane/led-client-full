@@ -1,3 +1,7 @@
+colour-science
+imageio
+imageio-ffmpeg
+opencv-python
 dataclasses-json
 PySide6
 pyside6-helpers @ git+https://github.com/MrFrangipane/pyside6-helpers@main

@@ -4,88 +4,31 @@ from dataclasses import dataclass
 from pythonarduinoserial.types import *
 
 
-@dataclass
-class BeginSamplePointsReceptionCommand:
-    count: IntegerType() = 0
-
-
-@dataclass
-class EndSamplePointsReceptionCommand:
-    unused: IntegerType() = 0
-
-
-@dataclass
-class BeginLedInfoReceptionCommand:
-    count: IntegerType() = 0
-
-
-@dataclass
-class SaveSamplingPointsCommand:
-    unused: IntegerType() = 0  # FIXME
-
-
-@dataclass
-class SamplePointStruct:
-    index: IntegerType() = 0
-    x: FloatType() = 0.0
-    y: FloatType() = 0.0
-    universe_number: IntegerType() = 0
-    universe_channel: IntegerType() = 0
-    color_format: IntegerType() = 0
-
-
-@dataclass
-class LedInfoStruct:
-    sampling_point_index: IntegerType() = 0
-    led_index: IntegerType() = 0
-
-
-@dataclass
-class HardwareConfigurationStruct:
-    name: StringType(8) = "Board"  # includes null terminator, length 8 to avoid manual bytes padding
-
-    hardware_id: BytesType(8) = BytesDefault(8)
-    hardware_revision: IntegerType() = 0
-    pin_admin_mode: IntegerType() = 1
-    pin_dmx_input: IntegerType() = 11
-    pin_led_first: IntegerType() = 6  # GPIO number
-    slider_logarithmic_scale: FloatType() = 1.5
-
-    firmware_revision: IntegerType() = 0
-
-    wifi_password: StringType(16) = "0123456789ABCDE"  # includes null terminator, length 16 to avoid manual bytes padding
-    wifi_ip_address: BytesType(4) = bytes([192, 168, 0, 201])
-    wifi_gateway: BytesType(4) = bytes([192, 168, 0, 1])
-    wifi_subnet: BytesType(4) = bytes([255, 255, 0, 0])
-
-    led_count: IntegerType() = 144
-    led_color_format: IntegerType() = 1  # GRB
-
-    osc_receive_port: IntegerType() = 54321
-
-
-def make_simple_led_strip_data(count):
+def make_simple_led_strip_data(count_x, count_y):
     data = dict()
     sampling_points: dict[int, SamplePointStruct] = dict()
     led_infos: list[LedInfoStruct] = list()
     pixels_done = list()
 
-    for sampling_point_index in range(count):
-        sampling_points[sampling_point_index + 1] = SamplePointStruct(
-            index=sampling_point_index,
-            x=0.0,  # float(scan_point["x"]) / 10.0,
-            y=float(sampling_point_index),
-            universe_number=1,
-            universe_channel=sampling_point_index * 3,
-            color_format=1
-        )
-
-        led_infos.append(
-            LedInfoStruct(
-                sampling_point_index=sampling_point_index,
-                led_index=sampling_point_index
+    sampling_point_index = 0
+    for y in range(count_y):
+        for x in range(count_x):
+            sampling_points[sampling_point_index + 1] = SamplePointStruct(
+                index=sampling_point_index,
+                x=float(x),
+                y=float(y),
+                universe_number=1,
+                universe_channel=sampling_point_index * 3,
+                color_format=1
             )
-        )
+
+            led_infos.append(
+                LedInfoStruct(
+                    sampling_point_index=sampling_point_index,
+                    led_index=sampling_point_index
+                )
+            )
+            sampling_point_index += 1
 
     data[1] = {
         "sampling_points": sampling_points,
@@ -151,7 +94,7 @@ if __name__ == "__main__":
     import sys
     import time
 
-    PORT = 'COM7'
+    PORT = 'COM9'
 
     from serial.tools.list_ports import comports as list_serial_ports
     from pythonarduinoserial.communicator import SerialCommunicator
@@ -202,12 +145,12 @@ if __name__ == "__main__":
         hardware_configuration_struct = serial_communicator.receive(HardwareConfigurationStruct)
         hardware_configuration_struct.name = "Blitz"
         hardware_configuration_struct.pin_led_first = 6
-        hardware_configuration_struct.led_count = 250
+        hardware_configuration_struct.led_count = 160
 
         serial_communicator.send(hardware_configuration_struct)
 
         # scan_data = read_scan_data()
-        scan_data = make_simple_led_strip_data(50)
+        scan_data = make_simple_led_strip_data(16, 10)
         count = sum([len(universe['sampling_points']) for universe in scan_data.values()])
         print(f"total SamplingPoint: {count}")
 
