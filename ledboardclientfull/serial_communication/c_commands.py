@@ -19,6 +19,11 @@ class RebootInBootloaderModeCommand:
 
 
 @dataclass
+class SaveControlParametersCommand:
+    unused: IntegerType() = 0  # FIXME
+
+
+@dataclass
 class SaveSamplingPointsCommand:
     unused: IntegerType() = 0  # FIXME
 
@@ -27,5 +32,6 @@ __all__ = [
     BeginSamplePointsReceptionCommand,
     EndSamplePointsReceptionCommand,
     RebootInBootloaderModeCommand,
+    SaveControlParametersCommand,
     SaveSamplingPointsCommand,
 ]

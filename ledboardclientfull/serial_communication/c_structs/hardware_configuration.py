@@ -21,6 +21,6 @@ class HardwareConfigurationStruct:
     wifi_subnet: BytesType(4) = bytes([255, 255, 0, 0])
 
     led_count: IntegerType() = 160  # value for 16x10 Led matrix
-    led_color_format: IntegerType() = 1  # GRB
+    led_color_format: IntegerType() = 0  # RGB: 0, GRB: 1
 
     osc_receive_port: IntegerType() = 54321

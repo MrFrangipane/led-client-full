@@ -22,5 +22,5 @@ class SamplePointStruct:
         new.y = sampling_point.y
         new.universe_number = sampling_point.universe_number
         new.universe_channel = sampling_point.universe_channel
-        new.color_format = sampling_point.color_format
+        new.color_format = sampling_point.color_format.value
         return new
