@@ -1,4 +1,6 @@
 import logging
+import os
+
 import sys
 
 logging.basicConfig(level=logging.DEBUG)
@@ -249,12 +251,34 @@ class UiControlParameters:
 
 
 if __name__ == "__main__":
+    import shutil
+    import time
+
     if "bootloader" in sys.argv:
         print("Rebooting in bootloader mode")
         board = BoardApi(serial_port='COM9')
         board.reboot_in_bootloader_mode()
         exit(0)
 
+    if "upload" in sys.argv:
+        filepath = sys.argv[-1]
+        if not os.path.exists(filepath):
+            raise ValueError(f"File {filepath} does not exist !")
+
+        if not os.path.exists("F:/"):
+            print("Rebooting in bootloader mode")
+            board = BoardApi(serial_port="COM9")
+            board.reboot_in_bootloader_mode()
+
+        time.sleep(2)
+
+        print(f"Uploading {filepath} to board")
+        shutil.copy(filepath, "F:/")
+
+        time.sleep(2)
+
+    print("Starting UI")
     ui = UiControlParameters(serial_port="COM9")
     ui.make_ui()
+    ui.get_from_board()
     Main.run()
