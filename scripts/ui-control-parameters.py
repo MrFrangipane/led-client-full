@@ -17,8 +17,8 @@ class UiControlParameters:
     Padding = 5
     SliderWidth = 200
 
-    def __init__(self):
-        self.board = BoardApi(serial_port='COM9')
+    def __init__(self, serial_port: str):
+        self.board = BoardApi(serial_port)
 
     def send_to_board(self, value):
         self.board.set_control_parameters(ControlParametersStruct(
@@ -61,8 +61,11 @@ class UiControlParameters:
 
     def save(self):
         self.board.save_control_parameters()
+        hardware_configuration = self.board.get_configuration()
 
-        self.board.set_configuration(self.board.get_configuration())
+        if hardware_configuration is None:
+            raise ValueError("Could not retrieve hardware configuration")
+        self.board.set_configuration(hardware_configuration)
 
     def reboot_to_bootloader(self):
         self.board.reboot_in_bootloader_mode()
@@ -252,6 +255,6 @@ if __name__ == "__main__":
         board.reboot_in_bootloader_mode()
         exit(0)
 
-    ui = UiControlParameters()
+    ui = UiControlParameters(serial_port="COM9")
     ui.make_ui()
     Main.run()
