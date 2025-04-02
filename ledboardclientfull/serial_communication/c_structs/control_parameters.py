@@ -24,3 +24,6 @@ class ControlParametersStruct:
     mask_x2: IntegerType() = 0
     mask_y1: IntegerType() = 0
     mask_y2: IntegerType() = 0
+
+    noise_scale: IntegerType() = 3
+    noise_octaves: IntegerType() = 2

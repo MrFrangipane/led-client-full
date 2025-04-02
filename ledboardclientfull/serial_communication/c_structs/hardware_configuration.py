@@ -23,4 +23,6 @@ class HardwareConfigurationStruct:
     led_count: IntegerType() = 160  # value for 16x10 Led matrix
     led_color_format: IntegerType() = 0  # RGB: 0, GRB: 1
 
+    gamma_correction: FloatType() = 2.6
+
     osc_receive_port: IntegerType() = 54321
