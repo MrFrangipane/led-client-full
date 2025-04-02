@@ -18,3 +18,9 @@ class ControlParametersStruct:
     r: IntegerType() = 0
     g: IntegerType() = 200
     b: IntegerType() = 200
+
+    # > 0: additive, < 0: multiply
+    mask_x1: IntegerType() = 0
+    mask_x2: IntegerType() = 0
+    mask_y1: IntegerType() = 0
+    mask_y2: IntegerType() = 0

@@ -25,6 +25,10 @@ class UiControlParameters:
             r=self.r.get(),
             g=self.g.get(),
             b=self.b.get(),
+            mask_x1=self.mask_x1.get(),
+            mask_x2=self.mask_x2.get(),
+            mask_y1=self.mask_y1.get(),
+            mask_y2=self.mask_y2.get(),
         ))
 
     def get_from_board(self):
@@ -43,6 +47,10 @@ class UiControlParameters:
         self.r.set(parameters.r)
         self.g.set(parameters.g)
         self.b.set(parameters.b)
+        self.mask_x1.set(parameters.mask_x1)
+        self.mask_x2.set(parameters.mask_x2)
+        self.mask_y1.set(parameters.mask_y1)
+        self.mask_y2.set(parameters.mask_y2)
 
     def save(self):
         self.board.save_control_parameters()
@@ -54,9 +62,25 @@ class UiControlParameters:
         self.master = Tk()
 
         #
-        # X
+        # Frames
         frame_x = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
-        frame_x.pack(fill=BOTH, expand=True, padx=5, pady=5)
+        frame_y = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+        frame_z = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+        frame_min_max = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+        frame_rgb = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+        frame_buttons = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+        frame_masks = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
+
+        frame_x.grid(row=0, column=0, padx=5, pady=5)
+        frame_y.grid(row=0, column=1, padx=5, pady=5)
+        frame_z.grid(row=0, column=2, padx=5, pady=5)
+        frame_min_max.grid(row=1, column=0, padx=5, pady=5)
+        frame_rgb.grid(row=1, column=1, padx=5, pady=5)
+        frame_masks.grid(row=1, column=2, padx=5, pady=5)
+        frame_buttons.grid(row=2, column=0, columnspan=3, padx=5, pady=5)
+
+        #
+        # X
         Label(frame_x, text="X").pack(pady=5)
         self.speed_x = Scale(
             frame_x,
@@ -80,8 +104,6 @@ class UiControlParameters:
 
         #
         # Y
-        frame_y = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
-        frame_y.pack(fill=BOTH, expand=True, padx=5, pady=5)
         Label(frame_y, text="Y").pack(pady=5)
         self.speed_y = Scale(
             frame_y,
@@ -105,8 +127,6 @@ class UiControlParameters:
 
         #
         # Z
-        frame_z = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
-        frame_z.pack(fill=BOTH, expand=True, padx=5, pady=5)
         Label(frame_z, text="Z").pack(pady=5)
         self.speed_z = Scale(
             frame_z,
@@ -120,8 +140,6 @@ class UiControlParameters:
 
         #
         # Min / Max
-        frame_min_max = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
-        frame_min_max.pack(fill=BOTH, expand=True, padx=5, pady=5)
         Label(frame_min_max, text="min max").pack(pady=5)
         self.min = Scale(
             frame_min_max,
@@ -145,8 +163,6 @@ class UiControlParameters:
 
         #
         # RGB
-        frame_rgb = Frame(self.master, padx=5, pady=5, relief=RAISED, borderwidth=2)
-        frame_rgb.pack(fill=BOTH, expand=True, padx=5, pady=5)
         Label(frame_rgb, text="RGB").pack(pady=5)
         self.r = Scale(
             frame_rgb,
@@ -177,23 +193,65 @@ class UiControlParameters:
         self.b.pack(pady=5)
 
         #
+        # Masks
+        Label(frame_masks, text="Masks X").pack(pady=5)
+        self.mask_x1 = Scale(
+            frame_masks,
+            from_=-255,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.mask_x1.pack(pady=5)
+        self.mask_x2 = Scale(
+            frame_masks,
+            from_=-255,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.mask_x2.pack(pady=5)
+
+        Label(frame_masks, text="Masks Y").pack(pady=5)
+        self.mask_y1 = Scale(
+            frame_masks,
+            from_=-255,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.mask_y1.pack(pady=5)
+        self.mask_y2 = Scale(
+            frame_masks,
+            from_=-255,
+            to=255,
+            orient=HORIZONTAL,
+            length=200,
+            command=self.send_to_board,
+        )
+        self.mask_y2.pack(pady=5)
+
+        #
         # Buttons
         self.button_from_board = Button(
-            self.master,
+            frame_buttons,
             text='From Board',
             command=self.get_from_board
         )
         self.button_from_board.pack(pady=5)
 
         self.button_save = Button(
-            self.master,
+            frame_buttons,
             text='Save',
             command=self.save
         )
         self.button_save.pack(pady=5)
 
         self.button_in_bootloader_mode = Button(
-            self.master,
+            frame_buttons,
             text='Reboot to bootloader',
             command=self.reboot_to_bootloader
         )
