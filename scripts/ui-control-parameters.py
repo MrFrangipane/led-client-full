@@ -1,3 +1,8 @@
+import logging
+import sys
+
+logging.basicConfig(level=logging.DEBUG)
+
 from tkinter import *
 
 from ledboardclientfull.board_api import BoardApi
@@ -257,6 +262,14 @@ class UiControlParameters:
         )
         self.button_in_bootloader_mode.pack(pady=5)
 
-ui = UiControlParameters()
-ui._make_ui()
-mainloop()
+
+if __name__ == "__main__":
+    if "bootloader" in sys.argv:
+        print("Rebooting in bootloader mode")
+        board = BoardApi(serial_port='COM9')
+        board.reboot_in_bootloader_mode()
+        exit(0)
+
+    ui = UiControlParameters()
+    ui._make_ui()
+    mainloop()
