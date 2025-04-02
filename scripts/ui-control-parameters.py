@@ -3,7 +3,7 @@ import os
 
 import sys
 
-from pythonhelpers.tk_inter import Button, Frame, Main, Slider
+from pythonhelpers.tk_inter import Button, Frame, Main, IntegerSlider
 
 from ledboardclientfull.board_api import BoardApi
 from ledboardclientfull.serial_communication.c_structs.control_parameters import ControlParametersStruct
@@ -70,6 +70,7 @@ class UiControlParameters:
         if hardware_configuration is None:
             raise ValueError("Could not retrieve hardware configuration")
         self.board.set_configuration(hardware_configuration)
+        print("Saved")
 
     def reboot_to_bootloader(self):
         self.board.reboot_in_bootloader_mode()
@@ -117,14 +118,14 @@ class UiControlParameters:
 
         #
         # X
-        self.speed_x = Slider(
+        self.speed_x = IntegerSlider(
             "Speed",
             parent=frame_x,
             command=self.send_to_board,
             range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
-        self.scale_x = Slider(
+        self.scale_x = IntegerSlider(
             "Scale",
             parent=frame_x,
             command=self.send_to_board,
@@ -134,14 +135,14 @@ class UiControlParameters:
 
         #
         # Y
-        self.speed_y = Slider(
+        self.speed_y = IntegerSlider(
             "Speed",
             parent=frame_y,
             command=self.send_to_board,
             range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
-        self.scale_y = Slider(
+        self.scale_y = IntegerSlider(
             "Scale",
             parent=frame_y,
             command=self.send_to_board,
@@ -151,7 +152,7 @@ class UiControlParameters:
 
         #
         # Z
-        self.speed_z = Slider(
+        self.speed_z = IntegerSlider(
             "Speed",
             parent=frame_z,
             command=self.send_to_board,
@@ -161,26 +162,26 @@ class UiControlParameters:
 
         #
         # Noise Params
-        self.noise_scale = Slider(
+        self.noise_scale = IntegerSlider(
             "Scale",
             parent=frame_noise,
             command=self.send_to_board,
             min_=1, max_=16
         )
-        self.noise_octaves = Slider(
+        self.noise_octaves = IntegerSlider(
             "Octaves",
             parent=frame_noise,
             command=self.send_to_board,
             min_=1, max_=6
         )
-        self.min = Slider(
+        self.min = IntegerSlider(
             "Min",
             parent=frame_noise,
             command=self.send_to_board,
             range_=UiControlParameters.MinMaxRange,
             is_range_symmetric=False
         )
-        self.max = Slider(
+        self.max = IntegerSlider(
             "Max",
             parent=frame_noise,
             command=self.send_to_board,
@@ -190,21 +191,21 @@ class UiControlParameters:
 
         #
         # RGB
-        self.r = Slider(
+        self.r = IntegerSlider(
             "R",
             parent=frame_rgb,
             command=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
-        self.g = Slider(
+        self.g = IntegerSlider(
             "G",
             parent=frame_rgb,
             command=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
-        self.b = Slider(
+        self.b = IntegerSlider(
             "B",
             parent=frame_rgb,
             command=self.send_to_board,
@@ -214,28 +215,28 @@ class UiControlParameters:
 
         #
         # Masks
-        self.mask_x1 = Slider(
+        self.mask_x1 = IntegerSlider(
             "X +",
             parent=frame_masks,
             command=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
-        self.mask_x2 = Slider(
+        self.mask_x2 = IntegerSlider(
             "X -",
             parent=frame_masks,
             command=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
-        self.mask_y1 = Slider(
+        self.mask_y1 = IntegerSlider(
             "Y +",
             parent=frame_masks,
             command=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
-        self.mask_y2 = Slider(
+        self.mask_y2 = IntegerSlider(
             "Y -",
             parent=frame_masks,
             command=self.send_to_board,
@@ -266,11 +267,13 @@ if __name__ == "__main__":
     import shutil
     import time
 
+    com = "COM4"
+
     logging.basicConfig(level=logging.INFO)
 
     if "bootloader" in sys.argv:
         print("Rebooting in bootloader mode")
-        board = BoardApi(serial_port='COM9')
+        board = BoardApi(serial_port=com)
         board.reboot_in_bootloader_mode()
         exit(0)
 
@@ -281,7 +284,7 @@ if __name__ == "__main__":
 
         if not os.path.exists("F:/"):
             print("Rebooting in bootloader mode")
-            board = BoardApi(serial_port="COM9")
+            board = BoardApi(serial_port=com)
             board.reboot_in_bootloader_mode()
 
         time.sleep(2)
@@ -292,7 +295,7 @@ if __name__ == "__main__":
         time.sleep(2)
 
     print("Starting UI")
-    ui = UiControlParameters(serial_port="COM9")
+    ui = UiControlParameters(serial_port=com)
     ui.make_ui()
     ui.get_from_board()
     Main.run()
