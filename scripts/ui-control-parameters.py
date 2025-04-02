@@ -3,8 +3,6 @@ import os
 
 import sys
 
-logging.basicConfig(level=logging.DEBUG)
-
 from pythonhelpers.tk_inter import Button, Frame, Main, Slider
 
 from ledboardclientfull.board_api import BoardApi
@@ -38,6 +36,8 @@ class UiControlParameters:
             mask_x2=self.mask_x2.get(),
             mask_y1=self.mask_y1.get(),
             mask_y2=self.mask_y2.get(),
+            noise_octaves=self.noise_octaves.get(),
+            noise_scale=self.noise_scale.get()
         ))
 
     def get_from_board(self):
@@ -60,6 +60,8 @@ class UiControlParameters:
         self.mask_x2.set(parameters.mask_x2)
         self.mask_y1.set(parameters.mask_y1)
         self.mask_y2.set(parameters.mask_y2)
+        self.noise_octaves.set(parameters.noise_octaves)
+        self.noise_scale.set(parameters.noise_scale)
 
     def save(self):
         self.board.save_control_parameters()
@@ -92,8 +94,8 @@ class UiControlParameters:
             parent=self.main,
             grid_row=0, grid_column=2
         )
-        frame_min_max = Frame(
-            caption="Min / Max",
+        frame_noise = Frame(
+            caption="Noise Params",
             parent=self.main,
             grid_row=1, grid_column=0
         )
@@ -117,17 +119,16 @@ class UiControlParameters:
         # X
         self.speed_x = Slider(
             "Speed",
-            frame_x,
-            UiControlParameters.SpeedRange,
-            self.send_to_board,
+            parent=frame_x,
+            command=self.send_to_board,
+            range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
-
         self.scale_x = Slider(
             "Scale",
-            frame_x,
-            UiControlParameters.ScaleRange,
-            self.send_to_board,
+            parent=frame_x,
+            command=self.send_to_board,
+            range_=UiControlParameters.ScaleRange,
             is_range_symmetric=False
         )
 
@@ -135,17 +136,16 @@ class UiControlParameters:
         # Y
         self.speed_y = Slider(
             "Speed",
-            frame_y,
-            UiControlParameters.SpeedRange,
-            self.send_to_board,
+            parent=frame_y,
+            command=self.send_to_board,
+            range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
-
         self.scale_y = Slider(
             "Scale",
-            frame_y,
-            UiControlParameters.ScaleRange,
-            self.send_to_board,
+            parent=frame_y,
+            command=self.send_to_board,
+            range_=UiControlParameters.ScaleRange,
             is_range_symmetric=False
         )
 
@@ -153,26 +153,38 @@ class UiControlParameters:
         # Z
         self.speed_z = Slider(
             "Speed",
-            frame_z,
-            UiControlParameters.SpeedRange,
-            self.send_to_board,
+            parent=frame_z,
+            command=self.send_to_board,
+            range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
 
         #
-        # Min / Max
+        # Noise Params
+        self.noise_scale = Slider(
+            "Scale",
+            parent=frame_noise,
+            command=self.send_to_board,
+            min_=1, max_=16
+        )
+        self.noise_octaves = Slider(
+            "Octaves",
+            parent=frame_noise,
+            command=self.send_to_board,
+            min_=1, max_=6
+        )
         self.min = Slider(
             "Min",
-            frame_min_max,
-            UiControlParameters.MinMaxRange,
-            self.send_to_board,
+            parent=frame_noise,
+            command=self.send_to_board,
+            range_=UiControlParameters.MinMaxRange,
             is_range_symmetric=False
         )
         self.max = Slider(
             "Max",
-            frame_min_max,
-            UiControlParameters.MinMaxRange,
-            self.send_to_board,
+            parent=frame_noise,
+            command=self.send_to_board,
+            range_=UiControlParameters.MinMaxRange,
             is_range_symmetric=False
         )
 
@@ -180,23 +192,23 @@ class UiControlParameters:
         # RGB
         self.r = Slider(
             "R",
-            frame_rgb,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_rgb,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
         self.g = Slider(
             "G",
-            frame_rgb,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_rgb,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
         self.b = Slider(
             "B",
-            frame_rgb,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_rgb,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
 
@@ -204,30 +216,30 @@ class UiControlParameters:
         # Masks
         self.mask_x1 = Slider(
             "X +",
-            frame_masks,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_masks,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
         self.mask_x2 = Slider(
             "X -",
-            frame_masks,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_masks,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
         self.mask_y1 = Slider(
             "Y +",
-            frame_masks,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_masks,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
         self.mask_y2 = Slider(
             "Y -",
-            frame_masks,
-            UiControlParameters.MaskRange,
-            self.send_to_board,
+            parent=frame_masks,
+            command=self.send_to_board,
+            range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
 
@@ -235,17 +247,17 @@ class UiControlParameters:
         # Buttons
         self.button_send = Button(
             'From Board',
-            frame_buttons,
+            parent=frame_buttons,
             command=self.get_from_board
         )
         self.button_save = Button(
             'Save',
-            frame_buttons,
+            parent=frame_buttons,
             command=self.save
         )
         self.button_in_bootloader_mode = Button(
             'Reboot to bootloader',
-            frame_buttons,
+            parent=frame_buttons,
             command=self.reboot_to_bootloader
         )
 
@@ -253,6 +265,8 @@ class UiControlParameters:
 if __name__ == "__main__":
     import shutil
     import time
+
+    logging.basicConfig(level=logging.INFO)
 
     if "bootloader" in sys.argv:
         print("Rebooting in bootloader mode")
