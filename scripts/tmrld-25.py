@@ -51,7 +51,7 @@ def strip_5m(port: str):
     for s in range(150, 300):
         new = SamplingPoint(
             index=s,
-            x=s - 150,
+            x=(s - 150),
             y=10,
             universe_number=0,
             universe_channel=s * 3,
