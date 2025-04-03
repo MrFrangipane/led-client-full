@@ -267,7 +267,14 @@ if __name__ == "__main__":
     import shutil
     import time
 
-    com = "COM4"
+    com = None
+    firmware_filepath = None
+    for arg in sys.argv:
+        if arg.startswith("COM"):
+            com = arg
+
+        if arg.endswith(".uf2"):
+            firmware_filepath = arg
 
     logging.basicConfig(level=logging.INFO)
 
@@ -278,9 +285,8 @@ if __name__ == "__main__":
         exit(0)
 
     if "upload" in sys.argv:
-        filepath = sys.argv[-1]
-        if not os.path.exists(filepath):
-            raise ValueError(f"File {filepath} does not exist !")
+        if not os.path.exists(firmware_filepath):
+            raise ValueError(f"File {firmware_filepath} does not exist !")
 
         if not os.path.exists("F:/"):
             print("Rebooting in bootloader mode")
@@ -289,8 +295,8 @@ if __name__ == "__main__":
 
         time.sleep(2)
 
-        print(f"Uploading {filepath} to board")
-        shutil.copy(filepath, "F:/")
+        print(f"Uploading {firmware_filepath} to board")
+        shutil.copy(firmware_filepath, "F:/")
 
         time.sleep(2)
 
