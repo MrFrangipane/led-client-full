@@ -33,3 +33,6 @@ class ControlParametersStruct:
     mask_x2: IntegerType() = 0
     mask_y1: IntegerType() = 0
     mask_y2: IntegerType() = 0
+
+    bat_low: IntegerType() = 0
+    bat_1_bar: IntegerType() = 0

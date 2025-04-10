@@ -30,39 +30,30 @@ def waveshare_10x16(port: str):
 def strip_5m(port: str):
     board = BoardApi(serial_port=port)
     configuration = board.get_configuration()
-    configuration.led_count = 300
+    configuration.led_count = 150
+    configuration.gpio_led_first = 12
     board.set_configuration(configuration)
 
     print(configuration)
 
     sampling_points = list()
-    for s in range(150):
-        new = SamplingPoint(
-            index=s,
-            x=int((150 - s) * 1.2),
-            y=0,
-            universe_number=0,
-            universe_channel=s * 3,
-            color_format=ColorFormat.RGB,
-            led_indices=[s]
-        )
-        sampling_points.append(new)
-
-    for s in range(150, 300):
-        new = SamplingPoint(
-            index=s,
-            x=(s - 150),
-            y=10,
-            universe_number=0,
-            universe_channel=s * 3,
-            color_format=ColorFormat.RGB,
-            led_indices=[s]
-        )
-        sampling_points.append(new)
+    for i in range(6):
+        for s in range(150):
+            index = (i * 150) + s
+            new = SamplingPoint(
+                index=index,
+                x=int(s * (1 + (i * .1))),
+                y=i * 10,
+                universe_number=0,
+                universe_channel=s * 3,
+                color_format=ColorFormat.RGB,
+                led_indices=[index]
+            )
+            sampling_points.append(new)
 
     board.set_sampling_points(sampling_points)
 
 
 if __name__ == '__main__':
     # waveshare_10x16('COM9')
-    strip_5m('COM4')
+    strip_5m('COM11')

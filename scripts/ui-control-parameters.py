@@ -121,14 +121,14 @@ class UiControlParameters:
         self.speed_x = IntegerSlider(
             "Speed",
             parent=frame_x,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
         self.scale_x = IntegerSlider(
             "Scale",
             parent=frame_x,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.ScaleRange,
             is_range_symmetric=False
         )
@@ -138,14 +138,14 @@ class UiControlParameters:
         self.speed_y = IntegerSlider(
             "Speed",
             parent=frame_y,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
         self.scale_y = IntegerSlider(
             "Scale",
             parent=frame_y,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.ScaleRange,
             is_range_symmetric=False
         )
@@ -155,7 +155,7 @@ class UiControlParameters:
         self.speed_z = IntegerSlider(
             "Speed",
             parent=frame_z,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.SpeedRange,
             is_range_symmetric=True
         )
@@ -165,26 +165,26 @@ class UiControlParameters:
         self.noise_scale = IntegerSlider(
             "Scale",
             parent=frame_noise,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             min_=1, max_=16
         )
         self.noise_octaves = IntegerSlider(
             "Octaves",
             parent=frame_noise,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             min_=1, max_=6
         )
         self.min = IntegerSlider(
             "Min",
             parent=frame_noise,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MinMaxRange,
             is_range_symmetric=False
         )
         self.max = IntegerSlider(
             "Max",
             parent=frame_noise,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MinMaxRange,
             is_range_symmetric=False
         )
@@ -194,21 +194,21 @@ class UiControlParameters:
         self.r = IntegerSlider(
             "R",
             parent=frame_rgb,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
         self.g = IntegerSlider(
             "G",
             parent=frame_rgb,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
         self.b = IntegerSlider(
             "B",
             parent=frame_rgb,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=False
         )
@@ -218,28 +218,28 @@ class UiControlParameters:
         self.mask_x1 = IntegerSlider(
             "X +",
             parent=frame_masks,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
         self.mask_x2 = IntegerSlider(
             "X -",
             parent=frame_masks,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
         self.mask_y1 = IntegerSlider(
             "Y +",
             parent=frame_masks,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
         self.mask_y2 = IntegerSlider(
             "Y -",
             parent=frame_masks,
-            command=self.send_to_board,
+            on_change=self.send_to_board,
             range_=UiControlParameters.MaskRange,
             is_range_symmetric=True
         )
@@ -249,17 +249,17 @@ class UiControlParameters:
         self.button_send = Button(
             'From Board',
             parent=frame_buttons,
-            command=self.get_from_board
+            on_press=self.get_from_board
         )
         self.button_save = Button(
             'Save',
             parent=frame_buttons,
-            command=self.save
+            on_press=self.save
         )
         self.button_in_bootloader_mode = Button(
             'Reboot to bootloader',
             parent=frame_buttons,
-            command=self.reboot_to_bootloader
+            on_press=self.reboot_to_bootloader
         )
 
 
