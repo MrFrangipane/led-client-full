@@ -18,44 +18,45 @@ class UiControlParameters:
     SliderWidth = 200
 
     def __init__(self, serial_port: str):
-        self.board = BoardApi(serial_port)
+        self.board = BoardApi(serial_port=serial_port)
 
-    def send_to_board(self, value):
-        self.board.set_control_parameters(ControlParametersStruct(
-            speed_x=self.speed_x.get(),
-            speed_y=self.speed_y.get(),
-            speed_z=self.speed_z.get(),
-            scale_x=self.scale_x.get(),
-            scale_y=self.scale_y.get(),
-            min=self.min.get(),
-            max=self.max.get(),
-            r=self.r.get(),
-            g=self.g.get(),
-            b=self.b.get(),
+    def send_to_board(self, _=None):
+        params = ControlParametersStruct(
+            noise_speed_x=self.speed_x.get(),
+            noise_speed_y=self.speed_y.get(),
+            noise_speed_z=self.speed_z.get(),
+            noise_scale_x=self.scale_x.get(),
+            noise_scale_y=self.scale_y.get(),
+            noise_min=self.min.get(),
+            noise_max=self.max.get(),
+            noise_r=self.r.get(),
+            noise_g=self.g.get(),
+            noise_b=self.b.get(),
             mask_x1=self.mask_x1.get(),
             mask_x2=self.mask_x2.get(),
             mask_y1=self.mask_y1.get(),
             mask_y2=self.mask_y2.get(),
             noise_octaves=self.noise_octaves.get(),
             noise_scale=self.noise_scale.get()
-        ))
+        )
+        self.board.set_control_parameters(params)
 
-    def get_from_board(self):
+    def get_from_board(self, _=None):
         parameters = self.board.get_control_parameters()
         if parameters is None:
             print("No parameters received !")
             return
 
-        self.speed_x.set(parameters.speed_x)
-        self.speed_y.set(parameters.speed_y)
-        self.speed_z.set(parameters.speed_z)
-        self.scale_x.set(parameters.scale_x)
-        self.scale_y.set(parameters.scale_y)
-        self.min.set(parameters.min)
-        self.max.set(parameters.max)
-        self.r.set(parameters.r)
-        self.g.set(parameters.g)
-        self.b.set(parameters.b)
+        self.speed_x.set(parameters.noise_speed_x)
+        self.speed_y.set(parameters.noise_speed_y)
+        self.speed_z.set(parameters.noise_speed_z)
+        self.scale_x.set(parameters.noise_scale_x)
+        self.scale_y.set(parameters.noise_scale_y)
+        self.min.set(parameters.noise_min)
+        self.max.set(parameters.noise_max)
+        self.r.set(parameters.noise_r)
+        self.g.set(parameters.noise_g)
+        self.b.set(parameters.noise_b)
         self.mask_x1.set(parameters.mask_x1)
         self.mask_x2.set(parameters.mask_x2)
         self.mask_y1.set(parameters.mask_y1)
@@ -63,7 +64,7 @@ class UiControlParameters:
         self.noise_octaves.set(parameters.noise_octaves)
         self.noise_scale.set(parameters.noise_scale)
 
-    def save(self):
+    def save(self, _=None):
         self.board.save_control_parameters()
         hardware_configuration = self.board.get_configuration()
 
@@ -72,7 +73,7 @@ class UiControlParameters:
         self.board.set_configuration(hardware_configuration)
         print("Saved")
 
-    def reboot_to_bootloader(self):
+    def reboot_to_bootloader(self, _=None):
         self.board.reboot_in_bootloader_mode()
 
     def make_ui(self):
@@ -300,7 +301,7 @@ if __name__ == "__main__":
 
         time.sleep(2)
 
-    print("Starting UI")
+    print(f"Starting UI for {com}")
     ui = UiControlParameters(serial_port=com)
     ui.make_ui()
     ui.get_from_board()
