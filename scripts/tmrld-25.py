@@ -1,3 +1,5 @@
+import time
+
 from ledboardclientfull.board_api import BoardApi
 from ledboardclientfull.sampling_point import SamplingPoint
 from ledboardclientfull.color_format import ColorFormat
@@ -81,8 +83,8 @@ def rect_256(port: str):
     board.set_configuration(configuration)
 
     index = 0
-    led_offset = 256
-    sampling_points = make_wave_share_points()
+    led_offset = 0
+    sampling_points = list()  # make_wave_share_points()
     point_offset = len(sampling_points)
 
     for y in range(16):
@@ -100,13 +102,26 @@ def rect_256(port: str):
             sampling_points.append(new)
             index += 1
 
+    print(f"Sampling points: {len(sampling_points)}")
     board.set_sampling_points(sampling_points)
 
 
+def set_speed_z(port: str, speed: int):
+    board = BoardApi(serial_port=port)
+    parameters = board.get_control_parameters()
+    if parameters is None:
+        print("No parameters received !")
+        return
+    parameters.noise_speed_z = speed
+    board.save_control_parameters()
+
+
+
 if __name__ == '__main__':
-    com = "COM9"
-    print_config(com)
+    com = "COM11"
+    # print_config(com)
     # waveshare_10x16(com)
     # strip_5m(com)
     rect_256(com)
+    # set_speed_z(com, 1)
     print("Done.")
